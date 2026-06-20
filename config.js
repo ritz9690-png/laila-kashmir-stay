@@ -23,7 +23,7 @@ const CLOUDINARY_CONFIG = {
  * Usage: const url = await uploadToCloudinary(file);
  */
 async function uploadToCloudinary(file) {
-  if (CLOUDINARY_CONFIG.cloudName === 'djqhnredg') {
+  if (!CLOUDINARY_CONFIG.cloudName || !CLOUDINARY_CONFIG.uploadPreset) {
     throw new Error('Cloudinary not configured yet — fill cloudName & uploadPreset in config.js');
   }
   const formData = new FormData();
