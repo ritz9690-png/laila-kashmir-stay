@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Laila Kashmiri Stay — Dalgate, Srinagar</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="styles.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="this.disabled=true"/>
+<!-- styles.css load fail hone par bhi page readable rahe, isliye onerror se body pe class lagate hain -->
+<link rel="stylesheet" href="styles.css" onerror="document.documentElement.classList.add('no-styles-css')"/>
+<style>
+  /* Minimal safety net — agar styles.css missing ho to page kabhi pura blank/unreadable na ho */
+  html.no-styles-css body{background:#0f1a10;color:#fff;font-family:'DM Sans',sans-serif;padding:20px;line-height:1.6}
+  html.no-styles-css :where(section,div){max-width:900px;margin:0 auto 24px}
+  html.no-styles-css img{max-width:100%;height:auto}
+</style>
 </head>
 <body>
 
@@ -92,7 +99,9 @@
       <p class="sec-desc" id="aboutDesc" style="max-width:none">A family-run paying guest house in the heart of Srinagar, just minutes from Dal Lake. We started Laila Stay with one goal — give travellers the warmth of a Kashmiri home along with the comfort of a proper hotel. In partnership with Voyara Trails, we also help guests plan the rest of their Kashmir trip, from shikara rides to Gulmarg snowfields.</p>
       <a href="about.html" style="display:inline-block;margin-top:18px;color:var(--saffron);font-weight:600;font-size:.9rem;text-decoration:none">Read Full Story →</a>
     </div>
-    <div class="ph-box">🏡</div>
+    <div class="ph-box" style="max-width:420px;width:100%;height:320px;overflow:hidden;border-radius:16px;BACKGROUND-COLOR: WHITE;margin:0 auto">
+    <img src="HOME.jpeg" alt="Home" style="width:100%;object-fit:cover;display:block">
+  </div>
   </div>
 </section>
 
@@ -1177,13 +1186,16 @@ function animCounter(el,target,dur){
   let n=0; const step=target/60;
   const t=setInterval(()=>{ n+=step; if(n>=target){n=target;clearInterval(t);} el.textContent=Math.floor(n)+(target>=100?'+':''); },dur/60);
 }
-new IntersectionObserver(entries=>{
-  if(entries[0].isIntersecting){
-    animCounter(document.getElementById('ctr1'),500,1500);
-    observer2.disconnect();
-  }
-}).observe(document.querySelector('.about-strip'));
-const observer2 = new IntersectionObserver(()=>{});
+const aboutStripEl = document.querySelector('.about-strip');
+if(aboutStripEl){
+  const observer2 = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      animCounter(document.getElementById('ctr1'),500,1500);
+      observer2.disconnect();
+    }
+  });
+  observer2.observe(aboutStripEl);
+}
 
 // ════════════════════════════════
 //   ABOUT US (loads from Firestore if configured)
@@ -1204,15 +1216,21 @@ async function loadAboutContent(){
 // ════════════════════════════════
 //   INIT
 // ════════════════════════════════
-renderRooms();
-renderPackages();
-renderGallery();
-updateBookingDropdown();
-updateCounters();
-loadHeroBg();
-loadAboutContent();
-initSiteMap();
-seedDefaultDataIfEmpty().then(initFirestoreSync);
+// Each call wrapped individually — agar koi ek function (missing DOM element,
+// bad data, etc. ki vajah se) fail ho jaaye, baaki sab phir bhi chalenge.
+// Pehle is poore block ke crash hone se pura page blank dikh sakta tha.
+function safeInit(fn,label){
+  try{ fn(); }catch(e){ console.error('Init step failed: '+label, e); }
+}
+safeInit(renderRooms,'renderRooms');
+safeInit(renderPackages,'renderPackages');
+safeInit(renderGallery,'renderGallery');
+safeInit(updateBookingDropdown,'updateBookingDropdown');
+safeInit(updateCounters,'updateCounters');
+safeInit(loadHeroBg,'loadHeroBg');
+safeInit(loadAboutContent,'loadAboutContent');
+safeInit(initSiteMap,'initSiteMap');
+Promise.resolve(seedDefaultDataIfEmpty()).then(initFirestoreSync).catch(e=>console.error('Firestore init failed:',e));
 </script>
 </body>
 </html>
