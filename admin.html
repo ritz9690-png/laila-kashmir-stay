@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+body{background:var(--aside)}
+nav{background:var(--adark)!important;border-bottom:1px solid #1e3020}
+nav.scrolled{background:var(--adark)!important;border-bottom:1px solid #1e3020}
+nav .nav-logo{color:var(--saffron)!important}
+.nav-auth-btn{border-color:#2d4a2d!important;color:rgba(255,255,255,.8)!important;background:rgba(255,255,255,.06)!important}
+.hamburger span{background:#fff!important}
+</style>
+</head>
+<body>
+
+<!-- NAV (always dark in admin) -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">← Back to Site</a>
+  <ul class="nav-links">
+    <li><a href="index.html" style="color:rgba(255,255,255,.7)">Home</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="sa-wrap">
+  <!-- SIDEBAR -->
+  <aside class="sa-sidebar">
+    <div class="sa-logo">
+      <div class="sa-logo-t">Laila Admin</div>
+      <div class="sa-logo-s">Package & Room Manager</div>
+    </div>
+    <nav class="sa-nav">
+      <button class="sa-nav-item active" onclick="saSwitch('packages')">📦 Packages</button>
+      <button class="sa-nav-item" onclick="saSwitch('addpkg')">➕ Add Package</button>
+      <button class="sa-nav-item" onclick="saSwitch('rooms')">🏠 Rooms</button>
+      <button class="sa-nav-item" onclick="saSwitch('bookings')">📋 Bookings</button>
+      <button class="sa-nav-item" onclick="saSwitch('gallery')">🖼 Gallery</button>
+      <button class="sa-nav-item" onclick="saSwitch('about')">📖 About Us</button>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="sa-main">
+
+    <!-- ░░ PACKAGES LIST ░░ -->
+    <div class="sa-panel active" id="sa-packages">
+      <div class="sa-panel-title">Packages</div>
+      <div class="sa-panel-sub">All packages — click Edit to update details.</div>
+      <div id="saPkgList"><p style="color:rgba(255,255,255,.4)">Loading...</p></div>
+    </div>
+
+    <!-- ░░ ADD / EDIT PACKAGE ░░ -->
+    <div class="sa-panel" id="sa-addpkg">
+      <div class="sa-panel-title" id="pkgFormTitle">Add Package</div>
+      <div class="sa-panel-sub">Fill all sections below. Admin se fill karo, view-package.html pe automatically show hoga.</div>
+
+      <!-- 1. Basic Info -->
+      <div class="pkg-form-section">
+        <h3>📌 Basic Info</h3>
+        <div class="add-form-grid">
+          <div class="afg"><label>Package Name</label><input id="pf_name" placeholder="e.g. Premium Valley Retreat"/></div>
+          <div class="afg"><label>Tag (badge)</label><input id="pf_tag" placeholder="e.g. Land Only, Best Value"/></div>
+          <div class="afg"><label>Price ₹ (discounted)</label><input id="pf_price" type="number" placeholder="18999"/></div>
+          <div class="afg"><label>Original Price ₹ (strikethrough)</label><input id="pf_orig" type="number" placeholder="21999"/></div>
+          <div class="afg"><label>Nights</label><input id="pf_nights" type="number" placeholder="3"/></div>
+          <div class="afg"><label>Days</label><input id="pf_days" type="number" placeholder="4"/></div>
+          <div class="afg full"><label>Locations (e.g. 2n Srinagar | 1N Sonmarg)</label><input id="pf_locs" placeholder="2n Srinagar|1N Sonmarg"/></div>
+          <div class="afg full"><label>Package Overview</label><textarea id="pf_overview" style="min-height:130px" placeholder="Describe the package experience..."></textarea></div>
+          <div class="afg"><label>Featured?</label>
+            <select id="pf_featured"><option value="0">No</option><option value="1">Yes (highlighted)</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Package Includes (icons on sidebar) -->
+      <div class="pkg-form-section">
+        <h3>✅ Package Includes (sidebar icons)</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_hotel" checked/> 🏨 Hotel</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_sight" checked/> 👁 Sightseeing</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_trans" checked/> 🚌 Transfer</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_meal" checked/> 🍽 Meal</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_guide"/> 🧭 Guide</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_boat"/> 🛶 Shikara Ride</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_snow"/> ❄️ Snow Activity</label>
+        </div>
+      </div>
+
+      <!-- 3. Photos & Video -->
+      <div class="pkg-form-section">
+        <h3>📸 Photos & Video</h3>
+        <div class="add-form-grid">
+          <div class="afg full"><label>Photos (multiple allowed)</label>
+            <input type="file" id="pf_photos" multiple accept="image/*" style="background:#1a261a;border:1px solid #2d4a2d;color:#fff;padding:10px;border-radius:9px;width:100%"/>
+          </div>
+          <div class="afg full"><label>Video URL (Cloudinary or YouTube)</label>
+            <input id="pf_video" placeholder="https://res.cloudinary.com/... or https://youtube.com/..."/>
+          </div>
+        </div>
+        <div id="pf_photo_preview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"></div>
+      </div>
+
+      <!-- 4. Hotel Details -->
+      <div class="pkg-form-section">
+        <h3>🏨 Hotel Details</h3>
+        <div class="add-form-grid">
+          <div class="afg"><label>Hotel Name</label><input id="pf_hotel_name" placeholder="e.g. Akbar Heritage Houseboats"/></div>
+          <div class="afg"><label>Hotel Stars (1-5)</label><input id="pf_hotel_stars" type="number" min="1" max="5" placeholder="3"/></div>
+          <div class="afg full"><label>Location</label><input id="pf_hotel_loc" placeholder="e.g. Nigeen Lake, Srinagar"/></div>
+          <div class="afg full"><label>Amenities (comma separated)</label><input id="pf_hotel_amen" placeholder="WiFi, Breakfast, 24-hour front desk, Water dispenser"/></div>
+        </div>
+      </div>
+
+      <!-- 5. Day-wise Itinerary -->
+      <div class="pkg-form-section">
+        <h3>🗓 Day-wise Itinerary</h3>
+        <div id="dayRowsWrap"></div>
+        <button type="button" class="toggle-form-btn" onclick="addDayRow()">+ Add Day</button>
+      </div>
+
+      <!-- 6. Inclusions / Exclusions -->
+      <div class="pkg-form-section">
+        <h3>✅ Inclusions / ❌ Exclusions</h3>
+        <div class="add-form-grid">
+          <div class="afg"><label>Inclusions (one per line)</label>
+            <textarea id="pf_inc" style="min-height:130px" placeholder="Accommodation in base category room&#10;Welcome Drink on Arrival&#10;Daily Breakfast and Dinner&#10;Shikara Ride (1 Hour)"></textarea>
+          </div>
+          <div class="afg"><label>Exclusions (one per line)</label>
+            <textarea id="pf_exc" style="min-height:130px" placeholder="5% GST&#10;Entry Fees to Monuments&#10;Porter charges, Tips, Insurance"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Customizable Components -->
+      <div class="pkg-form-section">
+        <h3>🧩 Customizable Components (customer can add/remove)</h3>
+        <p style="color:#9ab89e;font-size:.8rem;margin-bottom:14px">These show on enquiry page as toggle options.</p>
+        <div id="saCompRowsWrap"></div>
+        <button type="button" class="toggle-form-btn" onclick="addSaCompRow()">+ Add Component</button>
+      </div>
+
+      <!-- 8. Terms & Conditions -->
+      <div class="pkg-form-section">
+        <h3>📄 Terms & Conditions</h3>
+        <div id="termRowsWrap"></div>
+        <button type="button" class="toggle-form-btn" onclick="addTermRow()">+ Add Term Section</button>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+        <button class="add-btn" onclick="savePkg()">💾 Save Package</button>
+        <button class="toggle-form-btn" onclick="resetPkgForm()">✕ Cancel / Reset</button>
+      </div>
+      <div id="pkgSaveMsg" style="display:none;margin-top:14px;padding:12px 16px;background:#1a3d2a;border-radius:10px;color:#6fcf97;font-size:.85rem"></div>
+    </div>
+
+    <!-- ░░ ROOMS ░░ -->
+    <div class="sa-panel" id="sa-rooms">
+      <div class="sa-panel-title">Rooms</div>
+      <div class="sa-panel-sub">Manage your room listings.</div>
+      <a href="index.html" style="color:var(--saffron);font-size:.85rem">→ Full room management is in the main site Admin Panel (gear icon in the homepage footer)</a>
+    </div>
+
+    <!-- ░░ BOOKINGS ░░ -->
+    <div class="sa-panel" id="sa-bookings">
+      <div class="sa-panel-title">Bookings</div>
+      <div class="sa-panel-sub">All enquiries sent through the website.</div>
+      <div id="saBookingList"><p style="color:rgba(255,255,255,.4)">Loading...</p></div>
+    </div>
+
+    <!-- ░░ GALLERY ░░ -->
+    <div class="sa-panel" id="sa-gallery">
+      <div class="sa-panel-title">Gallery</div>
+      <div class="sa-panel-sub">Upload photos. These appear in the main gallery section.</div>
+      <div class="acard">
+        <div class="afg full" style="margin-bottom:14px"><label>Upload Photos</label>
+          <input type="file" multiple accept="image/*" onchange="saUploadGallery(this.files)" style="background:#1a261a;border:1px solid #2d4a2d;color:#fff;padding:10px;border-radius:9px;width:100%"/>
+        </div>
+        <div id="saGalleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:14px"></div>
+      </div>
+    </div>
+
+    <!-- ░░ ABOUT US ░░ -->
+    <div class="sa-panel" id="sa-about">
+      <div class="sa-panel-title">About Us</div>
+      <div class="sa-panel-sub">This content shows on the About page.</div>
+      <div class="pkg-form-section">
+        <div class="add-form-grid">
+          <div class="afg full"><label>Title</label><input id="sa_about_title" placeholder="About Laila Kashmiri Stay"/></div>
+          <div class="afg full"><label>Description</label><textarea id="sa_about_desc" style="min-height:160px" placeholder="Tell guests your story..."></textarea></div>
+        </div>
+        <button class="add-btn" onclick="saveAboutSa()">Save About Us</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="config.js"></script>
+
+<script>
+const LS={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};
+
+function saSwitch(name){
+  document.querySelectorAll('.sa-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sa-nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sa-'+name).classList.add('active');
+  const idx={packages:0,addpkg:1,rooms:2,bookings:3,gallery:4,about:5};
+  document.querySelectorAll('.sa-nav-item')[idx[name]]?.classList.add('active');
+  if(name==='packages') loadSaPkgList();
+  if(name==='bookings') loadSaBookings();
+  if(name==='gallery') loadSaGallery();
+  if(name==='about') loadSaAbout();
+}
+function toggleMob(){const m=document.getElementById('mobMenu');if(m){m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';};}
+
+// ════════════════ PACKAGE FORM STATE ════════════════
+let editPkgId = null;
+let dayRows = [];    // {rowId, title, acts}
+let saCompRows = []; // {rowId, name, price, included, video}
+let termRows = [];   // {rowId, title, content}
+let saCompRowId=0, dayRowId=0, termRowId=0;
+
+function addDayRow(){
+  const id='d'+(++dayRowId);
+  dayRows.push({id, title:'', acts:''});
+  renderDayRows();
+}
+function removeDayRow(id){ dayRows=dayRows.filter(d=>d.id!==id); renderDayRows(); }
+function renderDayRows(){
+  document.getElementById('dayRowsWrap').innerHTML=dayRows.map((d,i)=>`
+    <div class="day-row">
+      <div class="day-row-head">
+        <div class="day-num-badge">Day ${i+1}</div>
+        <input class="day-title-inp" placeholder="e.g. Srinagar's Quiet Charms" value="${escH(d.title)}" oninput="dayRows.find(x=>x.id==='${d.id}').title=this.value"/>
+        <button type="button" class="comp-row-remove" onclick="removeDayRow('${d.id}')">✕</button>
+      </div>
+      <textarea class="day-acts-inp" placeholder="One activity per line..." oninput="dayRows.find(x=>x.id==='${d.id}').acts=this.value">${escH(d.acts)}</textarea>
+    </div>
+  `).join('');
+}
+
+function addSaCompRow(){
+  const id='sc'+(++saCompRowId);
+  saCompRows.push({id, name:'', price:'', included:true, video:''});
+  renderSaCompRows();
+}
+function removeSaCompRow(id){ saCompRows=saCompRows.filter(c=>c.id!==id); renderSaCompRows(); }
+function renderSaCompRows(){
+  document.getElementById('saCompRowsWrap').innerHTML=saCompRows.map(c=>`
+    <div class="comp-row">
+      <div class="comp-row-grid">
+        <div class="afg"><label>Name</label><input placeholder="e.g. Hotel Upgrade" value="${escH(c.name)}" oninput="updateSaComp('${c.id}','name',this.value)"/></div>
+        <div class="afg"><label>Price (₹)</label><input type="number" placeholder="e.g. 1500" value="${escH(c.price)}" oninput="updateSaComp('${c.id}','price',this.value)"/></div>
+        <div class="afg full"><label>Photo</label><input type="file" accept="image/*" onchange="updateSaComp('${c.id}','photoFile',this.files[0])"/></div>
+        <div class="afg full"><label>Video URL</label><input placeholder="Cloudinary/YouTube" value="${escH(c.video)}" oninput="updateSaComp('${c.id}','video',this.value)"/></div>
+      </div>
+      <div class="comp-row-foot">
+        <label style="color:rgba(255,255,255,.7);font-size:.8rem;display:flex;align-items:center;gap:7px"><input type="checkbox" ${c.included?'checked':''} onchange="updateSaComp('${c.id}','included',this.checked)"/> Included by default</label>
+        <button type="button" class="comp-row-remove" onclick="removeSaCompRow('${c.id}')">✕ Remove</button>
+      </div>
+    </div>
+  `).join('');
+}
+function updateSaComp(id,field,val){ const c=saCompRows.find(c=>c.id===id); if(c) c[field]=val; }
+
+function addTermRow(){
+  const id='t'+(++termRowId);
+  termRows.push({id, title:'', content:''});
+  renderTermRows();
+}
+function removeTermRow(id){ termRows=termRows.filter(t=>t.id!==id); renderTermRows(); }
+function renderTermRows(){
+  document.getElementById('termRowsWrap').innerHTML=termRows.map(t=>`
+    <div class="comp-row" style="margin-bottom:10px">
+      <div class="afg full" style="margin-bottom:10px"><label>Section Title</label><input value="${escH(t.title)}" placeholder="e.g. Travel Validity" oninput="termRows.find(x=>x.id==='${t.id}').title=this.value"/></div>
+      <div class="afg full"><label>Content</label><textarea style="min-height:60px" placeholder="e.g. The deal is valid till 30 Sep 2026." oninput="termRows.find(x=>x.id==='${t.id}').content=this.value">${escH(t.content)}</textarea></div>
+      <div style="text-align:right;margin-top:8px"><button type="button" class="comp-row-remove" onclick="removeTermRow('${t.id}')">✕ Remove</button></div>
+    </div>
+  `).join('');
+}
+
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ════════════════ SAVE PACKAGE ════════════════
+async function savePkg(){
+  const name=document.getElementById('pf_name').value.trim();
+  const price=document.getElementById('pf_price').value;
+  if(!name||!price){ showPkgMsg('⚠️ Name and price are required','#e8850a'); return; }
+  showPkgMsg('⏳ Uploading photos...','#9ab89e');
+
+  // Upload main photos
+  const files=Array.from(document.getElementById('pf_photos').files);
+  const photoUrls=[];
+  for(const f of files){
+    try{ photoUrls.push(await uploadToCloudinary(f)); }
+    catch(e){ console.error(e); }
+  }
+
+  // Upload component photos
+  const components=[];
+  for(const c of saCompRows){
+    if(!c.name.trim()) continue;
+    let cp='';
+    if(c.photoFile){ try{ cp=await uploadToCloudinary(c.photoFile); }catch(e){ console.error(e); } }
+    components.push({id:'c'+Date.now()+Math.random().toString(36).slice(2,5), name:c.name.trim(), price:Number(c.price)||0, included:!!c.included, photo:cp, video:(c.video||'').trim()});
+  }
+
+  const incl=[document.getElementById('pi_hotel').checked&&{id:'hotel',label:'Hotel',emoji:'\uD83C\uDFE8'},
+    document.getElementById('pi_sight').checked&&{id:'sight',label:'Sightseeing',emoji:'\uD83D\uDC41'},
+    document.getElementById('pi_trans').checked&&{id:'trans',label:'Transfer',emoji:'\uD83D\uDE8C'},
+    document.getElementById('pi_meal').checked&&{id:'meal',label:'Meal',emoji:'\uD83C\uDF7D'},
+    document.getElementById('pi_guide').checked&&{id:'guide',label:'Guide',emoji:'\uD83E\uDDED'},
+    document.getElementById('pi_boat').checked&&{id:'boat',label:'Shikara Ride',emoji:'\uD83D\uDEF6'},
+    document.getElementById('pi_snow').checked&&{id:'snow',label:'Snow Activity',emoji:'\u2744\uFE0F'}
+  ].filter(Boolean);
+
+  const pkgData={
+    name, price:Number(price),
+    originalPrice:Number(document.getElementById('pf_orig').value)||0,
+    nights:Number(document.getElementById('pf_nights').value)||null,
+    days:Number(document.getElementById('pf_days').value)||null,
+    tag:document.getElementById('pf_tag').value.trim()||'Package',
+    locations:document.getElementById('pf_locs').value.trim(),
+    overview:document.getElementById('pf_overview').value.trim(),
+    featured:document.getElementById('pf_featured').value==='1',
+    photos:photoUrls,
+    video:document.getElementById('pf_video').value.trim(),
+    hotel:{
+      name:document.getElementById('pf_hotel_name').value.trim(),
+      stars:Number(document.getElementById('pf_hotel_stars').value)||3,
+      location:document.getElementById('pf_hotel_loc').value.trim(),
+      amenities:document.getElementById('pf_hotel_amen').value.split(',').map(s=>s.trim()).filter(Boolean)
+    },
+    itinerary:dayRows.filter(d=>d.title.trim()).map((d,i)=>({
+      day:i+1, title:d.title.trim(),
+      activities:d.acts.split('\n').map(s=>s.trim()).filter(Boolean)
+    })),
+    inclusions:document.getElementById('pf_inc').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    exclusions:document.getElementById('pf_exc').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    components,
+    terms:termRows.filter(t=>t.title.trim()).map(t=>({title:t.title.trim(),content:t.content.trim()}))
+  };
+
+  try{
+    if(window.refs){
+      if(editPkgId) await refs.packages.doc(editPkgId).set({...pkgData, updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      else await refs.packages.add({...pkgData, createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    }else{
+      const pkgs=LS.get('lks_pkgs')||[];
+      if(editPkgId){ const i=pkgs.findIndex(p=>p.id===editPkgId); if(i>-1) pkgs[i]={...pkgs[i],...pkgData}; }
+      else pkgs.push({id:'p'+Date.now(),...pkgData});
+      LS.set('lks_pkgs',pkgs);
+    }
+    showPkgMsg(`✅ Package "${name}" saved!`,'#6fcf97');
+    resetPkgForm();
+    setTimeout(()=>saSwitch('packages'),1200);
+  }catch(e){
+    console.error(e);
+    showPkgMsg('❌ Save failed — check console','#e25c5c');
+  }
+}
+
+function showPkgMsg(msg,color='#6fcf97'){
+  const el=document.getElementById('pkgSaveMsg');
+  el.style.display='block'; el.style.color=color; el.textContent=msg;
+}
+
+function resetPkgForm(){
+  editPkgId=null; dayRows=[]; saCompRows=[]; termRows=[]; dayRowId=0; saCompRowId=0; termRowId=0;
+  ['pf_name','pf_tag','pf_price','pf_orig','pf_nights','pf_days','pf_locs','pf_overview','pf_video','pf_inc','pf_exc','pf_hotel_name','pf_hotel_stars','pf_hotel_loc','pf_hotel_amen'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+  ['pi_hotel','pi_sight','pi_trans','pi_meal'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=true; });
+  ['pi_guide','pi_boat','pi_snow'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
+  document.getElementById('pf_featured').value='0';
+  renderDayRows(); renderSaCompRows(); renderTermRows();
+  document.getElementById('pf_photo_preview').innerHTML='';
+  document.getElementById('pkgSaveMsg').style.display='none';
+  document.getElementById('pkgFormTitle').textContent='Add Package';
+}
+
+// ════════════════ PHOTO PREVIEW (local) ════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  const pf=document.getElementById('pf_photos');
+  if(pf) pf.addEventListener('change',function(){
+    const prev=document.getElementById('pf_photo_preview'); prev.innerHTML='';
+    Array.from(this.files).slice(0,6).forEach(f=>{
+      const url=URL.createObjectURL(f);
+      prev.innerHTML+=`<img src="${url}" style="width:90px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--pine)"/>`;
+    });
+  });
+  loadSaPkgList();
+});
+
+// ════════════════ PACKAGE LIST ════════════════
+async function loadSaPkgList(){
+  const el=document.getElementById('saPkgList');
+  let pkgs=[];
+  if(window.refs){
+    try{ const snap=await refs.packages.get(); pkgs=snap.docs.map(d=>({id:d.id,...d.data()})); }
+    catch(e){ console.error(e); }
+  }else{ pkgs=LS.get('lks_pkgs')||[]; }
+  if(!pkgs.length){ el.innerHTML='<p style="color:rgba(255,255,255,.4)">No packages yet. Add one!</p>'; return; }
+  el.innerHTML=pkgs.map(p=>`
+    <div class="sa-pkg-list-item">
+      <div class="sa-pkg-thumb">${(p.photos&&p.photos[0])?`<img src="${p.photos[0]}" alt="${p.name}"/>`:p.photo?`<img src="${p.photo}" alt="${p.name}"/>`:'🏔️'}</div>
+      <div style="flex:1">
+        <div style="color:#fff;font-weight:600;font-size:.92rem">${p.name}</div>
+        <div style="color:rgba(255,255,255,.4);font-size:.76rem">${p.nights||'?'}N/${p.days||'?'}D · ${p.locations||''} · ₹${Number(p.price||0).toLocaleString('en-IN')}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="toggle-form-btn" onclick="editPkg('${p.id}')">✏️ Edit</button>
+        <a href="view-package.html?id=${p.id}" target="_blank" class="toggle-form-btn" style="text-decoration:none;display:inline-flex;align-items:center">👁 View</a>
+        <button class="comp-row-remove" onclick="deleteSaPkg('${p.id}')">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function editPkg(id){
+  let pkg=null;
+  if(window.refs){ try{ const d=await refs.packages.doc(id).get(); if(d.exists) pkg={id,...d.data()}; }catch(e){} }
+  if(!pkg){ const pkgs=LS.get('lks_pkgs')||[]; pkg=pkgs.find(p=>p.id===id); }
+  if(!pkg) return;
+  editPkgId=id;
+  document.getElementById('pkgFormTitle').textContent='Edit Package';
+  const set=(i,v)=>{ const el=document.getElementById(i); if(el) el.value=v||''; };
+  set('pf_name',pkg.name); set('pf_tag',pkg.tag); set('pf_price',pkg.price);
+  set('pf_orig',pkg.originalPrice); set('pf_nights',pkg.nights); set('pf_days',pkg.days);
+  set('pf_locs',pkg.locations); set('pf_overview',pkg.overview); set('pf_video',pkg.video);
+  set('pf_inc',(pkg.inclusions||[]).join('\n')); set('pf_exc',(pkg.exclusions||[]).join('\n'));
+  set('pf_hotel_name',pkg.hotel?.name); set('pf_hotel_stars',pkg.hotel?.stars);
+  set('pf_hotel_loc',pkg.hotel?.location); set('pf_hotel_amen',(pkg.hotel?.amenities||[]).join(', '));
+  document.getElementById('pf_featured').value=pkg.featured?'1':'0';
+  const piMap={hotel:'pi_hotel',sight:'pi_sight',trans:'pi_trans',meal:'pi_meal',guide:'pi_guide',boat:'pi_boat',snow:'pi_snow'};
+  const inclIds=(pkg.packageIncludes||[]).map(x=>x.id||x);
+  Object.entries(piMap).forEach(([k,domId])=>{ const el=document.getElementById(domId); if(el) el.checked=inclIds.includes(k); });
+  dayRowId=0; dayRows=(pkg.itinerary||[]).map((d,i)=>({id:'d'+(++dayRowId),title:d.title||'',acts:(d.activities||[]).join('\n')}));
+  saCompRowId=0; saCompRows=(pkg.components||[]).map(c=>({id:'sc'+(++saCompRowId),...c,photoFile:null}));
+  termRowId=0; termRows=(pkg.terms||[]).map(t=>({id:'t'+(++termRowId),title:t.title||'',content:t.content||''}));
+  renderDayRows(); renderSaCompRows(); renderTermRows();
+  document.getElementById('pf_photo_preview').innerHTML=(pkg.photos||[]).map(u=>`<img src="${u}" style="width:90px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--pine)"/>`).join('');
+  saSwitch('addpkg');
+}
+
+async function deleteSaPkg(id){
+  if(!confirm('Delete this package?')) return;
+  if(window.refs){ try{ await refs.packages.doc(id).delete(); }catch(e){ alert('Delete failed'); return; } }
+  else{ const pkgs=(LS.get('lks_pkgs')||[]).filter(p=>p.id!==id); LS.set('lks_pkgs',pkgs); }
+  loadSaPkgList();
+}
+
+// ════════════════ BOOKINGS ════════════════
+async function loadSaBookings(){
+  const el=document.getElementById('saBookingList');
+  let bks=[];
+  if(window.refs){ try{ const snap=await refs.bookings.get(); bks=snap.docs.map(d=>({id:d.id,...d.data()})).reverse(); }catch(e){} }
+  else{ bks=LS.get('lks_bookings')||[]; }
+  if(!bks.length){ el.innerHTML='<p style="color:rgba(255,255,255,.4)">No bookings yet.</p>'; return; }
+  el.innerHTML=bks.map(b=>`
+    <div class="sa-pkg-list-item" style="flex-wrap:wrap;gap:10px">
+      <div style="flex:1;min-width:200px">
+        <div style="color:#fff;font-weight:600">${b.name} <span style="color:rgba(255,255,255,.4);font-weight:400;font-size:.8rem">${b.phone}</span></div>
+        <div style="color:rgba(255,255,255,.5);font-size:.78rem">${b.interest||'General'} · ${b.checkin||''}${b.checkout?' → '+b.checkout:''}</div>
+        ${b.msg?`<div style="color:rgba(255,255,255,.4);font-size:.77rem;margin-top:4px">${b.msg}</div>`:''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <span style="background:${b.status==='confirmed'?'#1a3d2a':b.status==='cancelled'?'#3d1a1a':'#1a2d3a'};color:${b.status==='confirmed'?'#6fcf97':b.status==='cancelled'?'#e25c5c':'#56b0e0'};font-size:.72rem;padding:4px 10px;border-radius:12px">${b.status||'new'}</span>
+        <a href="https://wa.me/${(b.phone||'').replace(/[^0-9]/g,'')}?text=${encodeURIComponent('Hi '+b.name+', thank you for enquiring about Laila Kashmiri Stay!')}" target="_blank" style="background:#25d366;color:#fff;font-size:.75rem;padding:5px 12px;border-radius:12px;text-decoration:none">💬 WA</a>
+        <button class="comp-row-remove" onclick="deleteSaBk('${b.id}')">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+async function deleteSaBk(id){
+  if(!confirm('Delete booking?')) return;
+  if(window.refs){ try{ await refs.bookings.doc(id).delete(); }catch(e){ return; } }
+  else{ LS.set('lks_bookings',(LS.get('lks_bookings')||[]).filter(b=>b.id!==id)); }
+  loadSaBookings();
+}
+
+// ════════════════ GALLERY ════════════════
+async function saUploadGallery(files){
+  for(const f of Array.from(files)){
+    try{
+      const url=await uploadToCloudinary(f);
+      if(window.refs) await refs.photos.add({data:url,name:f.name.replace(/\.[^.]+$/,''),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      else{ const ph=LS.get('lks_photos')||[]; ph.unshift({id:'ph'+Date.now(),data:url,name:f.name}); LS.set('lks_photos',ph); }
+    }catch(e){ console.error(e); }
+  }
+  loadSaGallery();
+}
+async function loadSaGallery(){
+  const el=document.getElementById('saGalleryGrid'); let photos=[];
+  if(window.refs){ try{ const snap=await refs.photos.get(); photos=snap.docs.map(d=>({id:d.id,...d.data()})); }catch(e){} }
+  else{ photos=LS.get('lks_photos')||[]; }
+  el.innerHTML=photos.map(p=>`
+    <div style="position:relative">
+      <img src="${p.data}" style="width:100%;height:100px;object-fit:cover;border-radius:8px"/>
+      <button onclick="deleteSaPhoto('${p.id}')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.7rem">✕</button>
+    </div>
+  `).join('');
+}
+async function deleteSaPhoto(id){
+  if(window.refs){ try{ await refs.photos.doc(id).delete(); }catch(e){return;} }
+  else{ LS.set('lks_photos',(LS.get('lks_photos')||[]).filter(p=>p.id!==id)); }
+  loadSaGallery();
+}
+
+// ════════════════ ABOUT US ════════════════
+async function loadSaAbout(){
+  try{
+    if(typeof getAboutContent==='function'){
+      const d=await getAboutContent();
+      if(d){ document.getElementById('sa_about_title').value=d.title||''; document.getElementById('sa_about_desc').value=d.desc||''; }
+    }
+  }catch(e){}
+}
+async function saveAboutSa(){
+  const title=document.getElementById('sa_about_title').value.trim();
+  const desc=document.getElementById('sa_about_desc').value.trim();
+  try{
+    if(typeof saveAboutContent==='function') await saveAboutContent({title,desc});
+    else{
+      const pkgs=LS.get('lks_about')||{}; LS.set('lks_about',{title,desc});
+    }
+    alert('✅ About Us saved!');
+  }catch(e){ alert('❌ Save failed'); }
+}
+</script>
+</body>
+</html>

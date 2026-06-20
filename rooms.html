@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Rooms & Stays — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html" class="active">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="index.html#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header"><span class="mm-title">Laila Kashmiri Stay</span><button class="mob-close" onclick="toggleMob()">✕</button></div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="index.html#booking" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="sec-eye">Where You'll Rest</div>
+  <h1>Our Rooms & Stays</h1>
+  <p>Every room reflects Kashmiri craftsmanship — walnut woodwork, hand-embroidered textiles, and mountain or lake views, just minutes from Dal Lake.</p>
+</div>
+
+<!-- BODY -->
+<div class="page-body">
+  <div class="listing-toolbar">
+    <div class="listing-search">
+      <input id="roomSearch" placeholder="Search rooms (e.g. mountain view, suite)..." oninput="renderRoomsPage()"/>
+    </div>
+    <div class="listing-sort">
+      <select id="roomSort" onchange="renderRoomsPage()">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+  </div>
+  <div class="rooms-grid" id="roomsGridFull"></div>
+  <p class="listing-empty" id="roomsEmpty" style="display:none">No rooms match your search.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar, offering comfort, safety, and authentic Kashmiri hospitality. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#booking">Book Now</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="mailto:lailaguesthouse1250@gmail.com">Email Us</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p></div>
+</footer>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+const LS = { get:k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}, set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)) };
+const defaultRooms = [
+  {id:'r1',name:'Deluxe Room',desc:'Cozy walnut-panelled room with garden view and traditional Kashmiri furnishings.',price:1800,amenities:['Free WiFi','Hot Water','Breakfast','AC'],badge:'Available',emoji:'🌿',photo:''},
+  {id:'r2',name:'Premium Room',desc:'Spacious room with panoramic Zabarwan mountain view and king bed.',price:2500,amenities:['Mountain View','Free WiFi','Breakfast','AC','TV'],badge:'Popular',emoji:'🏔️',photo:''},
+  {id:'r3',name:'Valley Suite',desc:'Our finest suite with private sit-out, Dal Lake glimpse and butler service.',price:4200,amenities:['Dal View','Butler','Breakfast','AC','Jacuzzi'],badge:'Top Pick',emoji:'💎',photo:''}
+];
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+function toggleMob(){const m=document.getElementById('mobMenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+let allRooms = [];
+
+async function loadRoomsList(){
+  if(window.refs){
+    try{
+      const snap = await refs.rooms.get();
+      if(!snap.empty){ allRooms = snap.docs.map(d=>({id:d.id,...d.data()})); renderRoomsPage(); return; }
+    }catch(e){ console.warn('Firestore rooms read failed, using localStorage', e); }
+  }
+  allRooms = LS.get('lks_rooms') || defaultRooms;
+  renderRoomsPage();
+}
+
+function renderRoomsPage(){
+  const q = (document.getElementById('roomSearch')?.value || '').trim().toLowerCase();
+  const sort = document.getElementById('roomSort')?.value || 'default';
+  let rooms = allRooms.filter(r=>{
+    if(!q) return true;
+    const hay = `${r.name} ${r.desc||''} ${(r.amenities||[]).join(' ')}`.toLowerCase();
+    return hay.includes(q);
+  });
+  if(sort==='low') rooms = [...rooms].sort((a,b)=>Number(a.price)-Number(b.price));
+  if(sort==='high') rooms = [...rooms].sort((a,b)=>Number(b.price)-Number(a.price));
+
+  const grid = document.getElementById('roomsGridFull');
+  const empty = document.getElementById('roomsEmpty');
+  if(!rooms.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = rooms.map(r=>`
+    <div class="room-card">
+      <div class="room-img-wrap">
+        ${r.photo ? `<img src="${r.photo}" alt="${r.name}" loading="lazy"/>` : `<div class="room-emoji">${r.emoji||'🏠'}</div>`}
+        <div class="room-badge">${r.badge||'Available'}</div>
+      </div>
+      <div class="room-body">
+        <div class="room-name">${r.name}</div>
+        <div class="room-desc">${r.desc||''}</div>
+        <div class="room-tags">${(r.amenities||[]).map(a=>`<span class="rtag">${a}</span>`).join('')}</div>
+        <div class="room-foot">
+          <div class="room-price">₹${Number(r.price||0).toLocaleString('en-IN')}<span>/night</span></div>
+          <div style="display:flex;gap:8px">
+            <a href="view-room.html?id=${r.id}" class="btn-o-light" style="font-size:.8rem;padding:9px 16px;text-decoration:none">View</a>
+            <a href="enquiry.html?type=room&id=${r.id}" class="btn-p" style="font-size:.8rem;padding:9px 18px;text-decoration:none">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+loadRoomsList();
+</script>
+</body>
+</html>

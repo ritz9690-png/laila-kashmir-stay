@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Login — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html" class="active">Login</a></li>
+    <li><a href="index.html#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header"><span class="mm-title">Laila Kashmiri Stay</span><button class="mob-close" onclick="toggleMob()">✕</button></div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#booking" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen">
+  <div class="login-card">
+
+    <!-- ░░ SIGNED-OUT VIEW ░░ -->
+    <div id="loginFormView">
+      <div class="li-icon">🔐</div>
+      <h1>Welcome Back</h1>
+      <p class="li-sub">Sign in to manage your bookings & referrals</p>
+
+      <div class="login-tabs">
+        <button class="login-tab active" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
+        <button class="login-tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- SIGN IN FORM -->
+      <div id="signinPanel">
+        <div class="login-field"><label>Email</label><input type="email" id="si_email" placeholder="you@email.com"/></div>
+        <div class="login-field"><label>Password</label><input type="password" id="si_pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doEmailSignin()"/></div>
+        <button class="login-submit" onclick="doEmailSignin()">Sign In</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="doResetPassword(event)" style="font-size:.78rem;color:var(--muted);text-decoration:none">Forgot password?</a></p>
+      </div>
+
+      <!-- SIGN UP FORM -->
+      <div id="signupPanel" style="display:none">
+        <div class="login-field"><label>Full Name</label><input type="text" id="su_name" placeholder="Your name"/></div>
+        <div class="login-field"><label>Email</label><input type="email" id="su_email" placeholder="you@email.com"/></div>
+        <div class="login-field"><label>Password</label><input type="password" id="su_pass" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doEmailSignup()"/></div>
+        <button class="login-submit" onclick="doEmailSignup()">Create Account</button>
+      </div>
+
+      <div class="login-divider">or continue with</div>
+      <button class="login-google" onclick="doGoogleSignin()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 18.9 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-1.8 14-5.2l-6.5-5.4C29.6 35.4 26.9 36 24 36c-5.3 0-9.6-3.4-11.3-8.1l-6.6 5C9.9 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.4C41.4 36 44 30.5 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="login-msg" id="loginMsg"></div>
+      <p class="login-foot">By continuing, you agree this is a demo guesthouse site.<br/>Need a room urgently? <a href="https://wa.me/919596609126" target="_blank">WhatsApp us</a></p>
+    </div>
+
+    <!-- ░░ SIGNED-IN VIEW ░░ -->
+    <div id="loginUserView" class="login-user-box">
+      <img id="lu_photo" src="" alt="Profile"/>
+      <h3 id="lu_name">—</h3>
+      <p id="lu_email">—</p>
+
+      <div class="login-ref-box">
+        <div class="lr-lbl">🔗 Your referral link — share & earn</div>
+        <div class="lr-val" id="lu_reflink">—</div>
+      </div>
+      <button class="login-submit" onclick="copyReferralLink()">Copy Referral Link</button>
+      <button class="login-google" style="margin-top:10px" onclick="goHome()">Go to Homepage</button>
+      <button class="login-google" style="margin-top:10px;color:#c0392b" onclick="doSignOut()">Sign Out</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+function toggleMob(){
+  const m = document.getElementById('mobMenu');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+
+function switchTab(tab){
+  document.getElementById('tabSignin').classList.toggle('active', tab==='signin');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+  document.getElementById('signinPanel').style.display = tab==='signin' ? 'block' : 'none';
+  document.getElementById('signupPanel').style.display = tab==='signup' ? 'block' : 'none';
+  hideMsg();
+}
+
+function showMsg(text, isError){
+  const el = document.getElementById('loginMsg');
+  el.textContent = text;
+  el.className = 'login-msg ' + (isError ? 'err' : 'ok');
+}
+function hideMsg(){
+  const el = document.getElementById('loginMsg');
+  el.className = 'login-msg';
+}
+
+function friendlyError(e){
+  const code = e?.code || '';
+  if(code.includes('not configured') || e?.message?.includes('not configured')) return 'Firebase isn\'t configured yet — fill in firebase.js with your project keys.';
+  if(code.includes('wrong-password') || code.includes('invalid-credential')) return 'Incorrect email or password.';
+  if(code.includes('user-not-found')) return 'No account found with that email.';
+  if(code.includes('email-already-in-use')) return 'An account already exists with that email — try signing in.';
+  if(code.includes('weak-password')) return 'Password should be at least 6 characters.';
+  if(code.includes('invalid-email')) return 'Please enter a valid email address.';
+  return e?.message || 'Something went wrong. Please try again.';
+}
+
+async function doEmailSignin(){
+  const email = document.getElementById('si_email').value.trim();
+  const pass = document.getElementById('si_pass').value;
+  if(!email || !pass){ showMsg('Please enter email and password.', true); return; }
+  try{
+    await signInWithEmail(email, pass);
+    showMsg('✅ Signed in successfully!', false);
+  }catch(e){ showMsg(friendlyError(e), true); }
+}
+
+async function doEmailSignup(){
+  const name = document.getElementById('su_name').value.trim();
+  const email = document.getElementById('su_email').value.trim();
+  const pass = document.getElementById('su_pass').value;
+  if(!name || !email || !pass){ showMsg('Please fill in all fields.', true); return; }
+  try{
+    await signUpWithEmail(name, email, pass);
+    showMsg('🎉 Account created! Welcome.', false);
+  }catch(e){ showMsg(friendlyError(e), true); }
+}
+
+async function doGoogleSignin(){
+  try{
+    await signInWithGoogle();
+  }catch(e){ showMsg(friendlyError(e), true); }
+}
+
+async function doResetPassword(ev){
+  ev.preventDefault();
+  const email = document.getElementById('si_email').value.trim();
+  if(!email){ showMsg('Enter your email above first, then click "Forgot password?"', true); return; }
+  try{
+    await resetPassword(email);
+    showMsg('📧 Password reset email sent — check your inbox.', false);
+  }catch(e){ showMsg(friendlyError(e), true); }
+}
+
+function doSignOut(){
+  signOutUser().then(() => { showSignedOutView(); });
+}
+
+function goHome(){ window.location.href = 'index.html'; }
+
+function showSignedInView(user){
+  document.getElementById('loginFormView').style.display = 'none';
+  document.getElementById('loginUserView').style.display = 'block';
+  document.getElementById('lu_photo').src = user.photoURL || 'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(user.displayName || user.email || 'U');
+  document.getElementById('lu_name').textContent = user.displayName || 'Welcome!';
+  document.getElementById('lu_email').textContent = user.email || '';
+  document.getElementById('lu_reflink').textContent = (typeof getMyReferralLink === 'function' && getMyReferralLink()) || '—';
+}
+function showSignedOutView(){
+  document.getElementById('loginFormView').style.display = 'block';
+  document.getElementById('loginUserView').style.display = 'none';
+}
+
+// React to auth state from firebase.js
+const _origOnAuthChanged = typeof onAuthChanged === 'function' ? onAuthChanged : null;
+function onAuthChanged(user){
+  if(_origOnAuthChanged) _origOnAuthChanged(user);
+  if(user) showSignedInView(user); else showSignedOutView();
+}
+// In case auth already resolved before this script ran
+if(typeof currentUser !== 'undefined' && currentUser) showSignedInView(currentUser);
+</script>
+</body>
+</html>

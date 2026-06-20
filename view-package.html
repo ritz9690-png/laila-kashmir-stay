@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Package — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="enquiry.html" class="nav-book">Enquire</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this)toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header"><span class="mm-title">Laila Kashmiri Stay</span><button class="mob-close" onclick="toggleMob()">✕</button></div>
+    <div class="mm-list">
+      <a href="about.html">About</a><a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a><a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="enquiry.html" class="mm-book">Enquire</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- Breadcrumb -->
+<div style="background:var(--cream);padding:72px 24px 0;max-width:1100px;margin:0 auto">
+  <p style="font-size:.8rem;color:var(--muted)"><a href="index.html" style="color:var(--muted);text-decoration:none">Home</a> › <a href="packages.html" style="color:var(--muted);text-decoration:none">Packages</a> › <span id="bcName" style="color:var(--ink)">Loading...</span></p>
+</div>
+
+<!-- MAIN GRID -->
+<div class="pd-wrap" id="pdWrap" style="display:none">
+
+  <!-- LEFT MAIN -->
+  <div class="pd-main">
+
+    <!-- Title block -->
+    <div class="pd-badge-row">
+      <span class="pd-badge" id="pdTag">Package</span>
+      <span class="pd-nights" id="pdNights"></span>
+    </div>
+    <h1 class="pd-title" id="pdTitle">Loading...</h1>
+    <p class="pd-locs" id="pdLocs"></p>
+
+    <!-- Photo Slider -->
+    <div class="pd-slider" id="pdSlider">
+      <div class="pd-slider-track" id="pdTrack"></div>
+      <button class="pd-arr prev" id="pdPrev" onclick="slidePrev()">‹</button>
+      <button class="pd-arr next" id="pdNext" onclick="slideNext()">›</button>
+    </div>
+    <div class="pd-dots" id="pdDots"></div>
+
+    <!-- Tabs -->
+    <div class="pd-tabs">
+      <button class="pd-tab active" onclick="pdTab('overview',this)">Overview</button>
+      <button class="pd-tab" onclick="pdTab('itinerary',this)">Day wise Itinerary</button>
+      <button class="pd-tab" onclick="pdTab('inclusions',this)">Inclusion / Exclusions</button>
+      <button class="pd-tab" onclick="pdTab('customize',this)">Customize</button>
+      <button class="pd-tab" onclick="pdTab('terms',this)">Additional Info</button>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div class="pd-panel active" id="tab-overview">
+      <h3 class="pd-section-title">Package Overview</h3>
+      <p class="pd-overview-text" id="pdOverview"></p>
+
+      <div id="pdHotelWrap" style="margin-top:28px;display:none">
+        <h3 class="pd-section-title">Hotel Details</h3>
+        <div class="pd-hotel-card">
+          <div class="pd-hotel-img" id="pdHotelEmoji">🏨</div>
+          <div>
+            <div class="pd-hotel-name" id="pdHotelName"></div>
+            <div class="pd-hotel-loc" id="pdHotelLoc"></div>
+            <div class="pd-hotel-amen" id="pdHotelAmen"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITINERARY TAB -->
+    <div class="pd-panel" id="tab-itinerary">
+      <h3 class="pd-section-title">Day wise Itinerary</h3>
+      <div id="pdItinerary"></div>
+    </div>
+
+    <!-- INCLUSIONS TAB -->
+    <div class="pd-panel" id="tab-inclusions">
+      <div class="inc-exc-grid">
+        <div class="inc-box">
+          <h4>✅ Inclusions</h4>
+          <ul class="inc-list" id="pdInc"></ul>
+        </div>
+        <div class="exc-box">
+          <h4>❌ Exclusions</h4>
+          <ul class="exc-list" id="pdExc"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMIZE TAB -->
+    <div class="pd-panel" id="tab-customize">
+      <h3 class="pd-section-title">Customize Your Package</h3>
+      <p style="color:var(--muted);font-size:.9rem;margin-bottom:20px">Toggle what you want to add or remove. Price updates live.</p>
+      <div id="pdComponents"></div>
+      <div style="margin-top:20px;padding:16px;background:var(--saffron-l);border-radius:12px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:.8rem;color:var(--muted)">Total estimated price</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:var(--ink)" id="compTotal">₹0</div>
+        </div>
+        <button class="btn-p" onclick="enquireCustom()">Enquire with Selection →</button>
+      </div>
+    </div>
+
+    <!-- TERMS TAB -->
+    <div class="pd-panel" id="tab-terms">
+      <h3 class="pd-section-title">Additional Info & Terms</h3>
+      <div id="pdTerms"></div>
+    </div>
+
+  </div><!-- /pd-main -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="pd-sidebar">
+
+    <div class="pd-price-box">
+      <div class="pd-orig-price" id="pdOrigPrice" style="display:none"></div>
+      <div class="pd-curr-price" id="pdCurrPrice">₹0<span class="pd-per"> /person</span></div>
+      <button class="pd-enq-btn" onclick="goEnquiry()">ENQUIRE NOW</button>
+      <a class="pd-wa-btn" id="pdWaBtn" href="#" target="_blank">💬 Chat on WhatsApp</a>
+      <div style="border-top:1px solid var(--border);margin:18px 0 14px"></div>
+      <div class="pd-info-row"><span class="ic">🕐</span><span>Duration: <strong id="pdDuration"></strong></span></div>
+      <div class="pd-info-row"><span class="ic">📍</span><span>Places: <span id="pdPlaces"></span></span></div>
+    </div>
+
+    <div class="pd-incl-box" id="pdInclBox">
+      <h4>Package Includes</h4>
+      <div class="pd-incl-icons" id="pdInclIcons"></div>
+    </div>
+
+    <div class="pd-help-box" style="margin-top:16px">
+      <h4>🎧 Need Help?</h4>
+      <a href="tel:+919596609126">📞 +91 95966 09126</a>
+      <a href="mailto:lailaguesthouse1250@gmail.com">✉️ lailaguesthouse1250@gmail.com</a>
+      <a href="https://wa.me/919596609126" target="_blank">💬 WhatsApp us</a>
+    </div>
+
+  </div>
+
+</div><!-- /pd-wrap -->
+
+<!-- Loading state -->
+<div id="pdLoading" style="text-align:center;padding:140px 24px 80px;color:var(--muted)">Loading package details...</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p></div>
+</footer>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+const LS={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};
+const WA='919596609126';
+let currentPkg=null, slideIdx=0, slideTotal=0;
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+function toggleMob(){const m=document.getElementById('mobMenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+// ════════════════ LOAD PACKAGE ════════════════
+async function loadPkg(){
+  const id=new URLSearchParams(window.location.search).get('id');
+  if(!id){ document.getElementById('pdLoading').textContent='No package ID specified.'; return; }
+  let pkg=null;
+  if(window.refs){ try{ const d=await refs.packages.doc(id).get(); if(d.exists) pkg={id,...d.data()}; }catch(e){} }
+  if(!pkg){ const list=LS.get('lks_pkgs')||[]; pkg=list.find(p=>p.id===id); }
+  if(!pkg){ document.getElementById('pdLoading').textContent='Package not found.'; return; }
+  currentPkg=pkg; renderPkg(pkg);
+}
+
+function renderPkg(p){
+  document.title=`${p.name} — Laila Kashmiri Stay`;
+  document.getElementById('bcName').textContent=p.name;
+  document.getElementById('pdTag').textContent=p.tag||'Package';
+  document.getElementById('pdNights').textContent=p.nights?`${p.nights} Nights / ${p.days} Days`:'';
+  document.getElementById('pdTitle').textContent=p.name;
+  document.getElementById('pdLocs').textContent=p.locations||'';
+  document.getElementById('pdOverview').textContent=p.overview||'No overview added yet.';
+  document.getElementById('pdDuration').textContent=p.nights?`${p.nights} Nights & ${p.days} Days`:'—';
+  document.getElementById('pdPlaces').textContent=p.locations||'—';
+
+  // Price
+  const price=Number(p.price||0);
+  const orig=Number(p.originalPrice||0);
+  document.getElementById('pdCurrPrice').innerHTML=`₹${price.toLocaleString('en-IN')}<span class="pd-per"> /person</span>`;
+  const origEl=document.getElementById('pdOrigPrice');
+  if(orig && orig>price){ origEl.textContent=`₹${orig.toLocaleString('en-IN')}`; origEl.style.display='block'; }
+  const waMsg=encodeURIComponent(`Hi! I'm interested in "${p.name}" (₹${price.toLocaleString('en-IN')}/person). Please share details.`);
+  document.getElementById('pdWaBtn').href=`https://wa.me/${WA}?text=${waMsg}`;
+
+  // Slider
+  const slides=[];
+  if(p.video) slides.push({type:'video',src:p.video,poster:p.photos?.[0]||''});
+  const photos=p.photos?.length?p.photos:(p.photo?[p.photo]:[]);
+  photos.forEach(u=>slides.push({type:'img',src:u}));
+  buildSlider(slides);
+
+  // Package includes icons
+  const inclIcons=document.getElementById('pdInclIcons');
+  const pi=p.packageIncludes||[];
+  if(pi.length){
+    inclIcons.innerHTML=pi.map(x=>`<div class="pd-incl-icon"><span class="em">${x.emoji||'✅'}</span>${x.label||x}</div>`).join('');
+  } else {
+    document.getElementById('pdInclBox').style.display='none';
+  }
+
+  // Hotel
+  if(p.hotel?.name){
+    document.getElementById('pdHotelWrap').style.display='block';
+    document.getElementById('pdHotelName').textContent=p.hotel.name+' '+'⭐'.repeat(Math.min(p.hotel.stars||3,5));
+    document.getElementById('pdHotelLoc').textContent=p.hotel.location||'';
+    document.getElementById('pdHotelAmen').innerHTML=(p.hotel.amenities||[]).slice(0,6).map(a=>`<span class="pd-hotel-tag">${a}</span>`).join('');
+  }
+
+  // Itinerary
+  document.getElementById('pdItinerary').innerHTML=(p.itinerary||[]).map(d=>`
+    <div class="pd-day-card">
+      <div class="pd-day-num">Day<br/>${d.day}</div>
+      <div class="pd-day-body">
+        <div class="pd-day-title">${d.title}</div>
+        <ul class="pd-day-acts">${(d.activities||[]).map(a=>`<li>${a}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--muted)">Itinerary not added yet.</p>';
+
+  // Inclusions / Exclusions
+  document.getElementById('pdInc').innerHTML=(p.inclusions||[]).map(x=>`<li>${x}</li>`).join('')||'<li style="opacity:.5">Not specified</li>';
+  document.getElementById('pdExc').innerHTML=(p.exclusions||[]).map(x=>`<li>${x}</li>`).join('')||'<li style="opacity:.5">Not specified</li>';
+
+  // Customize components
+  renderComponents(p.components||[], price);
+
+  // Terms
+  document.getElementById('pdTerms').innerHTML=(p.terms||[]).map(t=>`
+    <div class="pd-term">
+      <div class="pd-term-hd" onclick="toggleTerm(this)">${t.title}<span>▼</span></div>
+      <div class="pd-term-bd">${t.content}</div>
+    </div>
+  `).join('')||'<p style="color:var(--muted)">No additional info added.</p>';
+
+  document.getElementById('pdLoading').style.display='none';
+  document.getElementById('pdWrap').style.display='grid';
+}
+
+// ════════════════ SLIDER ════════════════
+function buildSlider(slides){
+  const track=document.getElementById('pdTrack');
+  const dots=document.getElementById('pdDots');
+  slideTotal=slides.length; slideIdx=0;
+  if(!slideTotal){
+    document.getElementById('pdSlider').innerHTML='<div class="pd-slide-empty">🏔️</div>';
+    return;
+  }
+  track.innerHTML=slides.map(s=>
+    s.type==='video'
+      ? `<div class="pd-slide"><video src="${s.src}" controls playsinline ${s.poster?`poster="${s.poster}"`:''}></video></div>`
+      : `<div class="pd-slide"><img src="${s.src}" alt="Package photo" loading="lazy"/></div>`
+  ).join('');
+  dots.innerHTML=slides.map((_,i)=>`<button class="pd-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
+  document.getElementById('pdPrev').style.display=slideTotal<2?'none':'';
+  document.getElementById('pdNext').style.display=slideTotal<2?'none':'';
+}
+function goSlide(i){ slideIdx=i; document.getElementById('pdTrack').style.transform=`translateX(-${i*100}%)`; document.querySelectorAll('.pd-dot').forEach((d,j)=>d.classList.toggle('active',j===i)); }
+function slidePrev(){ goSlide((slideIdx-1+slideTotal)%slideTotal); }
+function slideNext(){ goSlide((slideIdx+1)%slideTotal); }
+
+// ════════════════ TABS ════════════════
+function pdTab(name, btn){
+  document.querySelectorAll('.pd-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.pd-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleTerm(hd){ hd.nextElementSibling.classList.toggle('open'); }
+
+// ════════════════ COMPONENTS / CUSTOMIZE ════════════════
+function renderComponents(comps, basePrice){
+  const wrap=document.getElementById('pdComponents');
+  if(!comps.length){ wrap.innerHTML='<p style="color:var(--muted)">No customizable options for this package.</p>'; updateCompTotal(basePrice,[]); return; }
+  wrap.innerHTML=comps.map(c=>`
+    <div style="background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;display:flex;gap:14px;align-items:center">
+      ${c.photo?`<img src="${c.photo}" style="width:80px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0"/>`:c.video?`<video src="${c.video}" style="width:80px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0" muted></video>`:'<div style="width:80px;height:64px;border-radius:10px;background:var(--pine-l);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0">🏷️</div>'}
+      <div style="flex:1">
+        <div style="font-weight:600;color:var(--ink);margin-bottom:2px">${c.name}</div>
+        ${c.price?`<div style="color:var(--saffron);font-size:.9rem;font-weight:600">+₹${Number(c.price).toLocaleString('en-IN')}</div>`:'<div style="color:var(--pine);font-size:.85rem">Included</div>'}
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0">
+        <input type="checkbox" ${c.included?'checked':''} onchange="compToggle()" data-comp-id="${c.id}" data-comp-price="${c.price||0}" style="width:18px;height:18px;accent-color:var(--saffron)"/>
+        <span style="font-size:.8rem;color:var(--muted)">${c.included?'Remove':'Add'}</span>
+      </label>
+    </div>
+  `).join('');
+  updateCompTotal(basePrice, comps);
+}
+function compToggle(){ updateCompTotal(Number(currentPkg?.price||0), currentPkg?.components||[]); }
+function updateCompTotal(base, comps){
+  let total=base;
+  document.querySelectorAll('[data-comp-id]').forEach(cb=>{ if(cb.checked) total+=Number(cb.dataset.compPrice||0); });
+  document.getElementById('compTotal').textContent=`₹${total.toLocaleString('en-IN')} /person`;
+}
+function enquireCustom(){
+  const selected=[];
+  document.querySelectorAll('[data-comp-id]').forEach(cb=>{
+    if(cb.checked){ const comp=currentPkg?.components?.find(c=>c.id===cb.dataset.compId); if(comp) selected.push(comp.name); }
+  });
+  const msg=`Hi! I'm interested in "${currentPkg?.name}" and want to customize it.\n\nSelected options:\n${selected.map(s=>'• '+s).join('\n')}\n\nPlease share availability and pricing.`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+function goEnquiry(){
+  window.location.href=`enquiry.html?type=pkg&id=${currentPkg?.id}`;
+}
+
+loadPkg();
+</script>
+</body>
+</html>

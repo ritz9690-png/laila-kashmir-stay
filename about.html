@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>About Us — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+.ap-hero{background:var(--pine);padding:90px 24px 60px;text-align:center}
+.ap-hero .sec-eye{color:var(--saffron)}
+.ap-hero h1{font-family:'Cormorant Garamond',serif;color:#fff;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:600}
+.ap-body{max-width:760px;margin:0 auto;padding:60px 24px}
+.ap-photo{background:var(--pine-l);border-radius:18px;height:260px;display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--pine);margin-bottom:36px}
+.ap-text{font-size:1rem;color:var(--ink);line-height:1.85;white-space:pre-line}
+.ap-cta{text-align:center;padding:50px 24px 80px}
+.ap-cta p{color:var(--muted);margin-bottom:18px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="index.html#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header">
+      <span class="mm-title">Laila Kashmiri Stay</span>
+      <button class="mob-close" onclick="toggleMob()">✕</button>
+    </div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="index.html#booking" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="ap-hero">
+  <div class="sec-eye">Our Story</div>
+  <h1 id="apTitle">About Laila Kashmiri Stay</h1>
+</div>
+
+<!-- BODY -->
+<div class="ap-body">
+  <div class="ap-photo">🏡</div>
+  <p class="ap-text" id="apDesc">A family-run paying guest house in the heart of Srinagar, just minutes from Dal Lake. We started Laila Stay with one goal — give travellers the warmth of a Kashmiri home along with the comfort of a proper hotel.
+
+In partnership with Voyara Trails, we also help guests plan the rest of their Kashmir trip — shikara rides on Dal Lake, day trips to Pahalgam and Gulmarg, and everything in between. Whether you're here for a quiet weekend or a full Kashmir holiday, our family looks after every detail so you don't have to.</p>
+</div>
+
+<div class="ap-cta">
+  <p>Ready to plan your Kashmir stay?</p>
+  <a href="index.html#booking" class="btn-p">Book Your Stay</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar, offering comfort, safety, and authentic Kashmiri hospitality. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#booking">Book Now</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="mailto:lailaguesthouse1250@gmail.com">Email Us</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p>
+  </div>
+</footer>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+// NAV scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+function toggleMob(){
+  const m = document.getElementById('mobMenu');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+
+// Load About content from Firestore (falls back to the static text already in the HTML)
+async function loadAboutPage(){
+  try{
+    if(typeof getAboutContent !== 'function') return;
+    const data = await getAboutContent();
+    if(data){
+      if(data.title) document.getElementById('apTitle').textContent = data.title;
+      if(data.desc) document.getElementById('apDesc').textContent = data.desc;
+    }
+  }catch(e){ console.warn('About content: using default text', e); }
+}
+loadAboutPage();
+</script>
+</body>
+</html>

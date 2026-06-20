@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Room — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="enquiry.html" class="nav-book">Enquire</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this)toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header"><span class="mm-title">Laila Kashmiri Stay</span><button class="mob-close" onclick="toggleMob()">✕</button></div>
+    <div class="mm-list">
+      <a href="about.html">About</a><a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a><a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="enquiry.html" class="mm-book">Enquire</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- Breadcrumb -->
+<div style="background:var(--cream);padding:72px 24px 0;max-width:1100px;margin:0 auto">
+  <p style="font-size:.8rem;color:var(--muted)"><a href="index.html" style="color:var(--muted);text-decoration:none">Home</a> › <a href="rooms.html" style="color:var(--muted);text-decoration:none">Rooms</a> › <span id="bcName" style="color:var(--ink)">Loading...</span></p>
+</div>
+
+<!-- MAIN GRID -->
+<div class="pd-wrap" id="pdWrap" style="display:none">
+
+  <!-- LEFT MAIN -->
+  <div class="pd-main">
+    <div class="pd-badge-row">
+      <span class="pd-badge" id="pdTag">Room</span>
+    </div>
+    <h1 class="pd-title" id="pdTitle">Loading...</h1>
+
+    <!-- Photo Slider -->
+    <div class="pd-slider" id="pdSlider">
+      <div class="pd-slider-track" id="pdTrack"></div>
+      <button class="pd-arr prev" id="pdPrev" onclick="slidePrev()">‹</button>
+      <button class="pd-arr next" id="pdNext" onclick="slideNext()">›</button>
+    </div>
+    <div class="pd-dots" id="pdDots"></div>
+
+    <h3 class="pd-section-title" style="margin-top:30px">Room Overview</h3>
+    <p class="pd-overview-text" id="pdOverview"></p>
+
+    <h3 class="pd-section-title" style="margin-top:28px">Amenities</h3>
+    <div class="room-tags" id="pdAmenities" style="margin-top:6px"></div>
+
+    <h3 class="pd-section-title" style="margin-top:28px">Where You'll Stay</h3>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:10px">New Road, Khona Khan, Dalgate, Srinagar — 5 min walk from Dal Lake.</p>
+    <div class="mini-map-wrap"><div id="roomMiniMap"></div></div>
+  </div><!-- /pd-main -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="pd-sidebar">
+    <div class="pd-price-box">
+      <div class="pd-curr-price" id="pdCurrPrice">₹0<span class="pd-per"> /night</span></div>
+      <button class="pd-enq-btn" onclick="goEnquiry()">BOOK THIS ROOM</button>
+      <a class="pd-wa-btn" id="pdWaBtn" href="#" target="_blank">💬 Chat on WhatsApp</a>
+      <div style="border-top:1px solid var(--border);margin:18px 0 14px"></div>
+      <div class="pd-info-row"><span class="ic">📍</span><span>Dalgate, Srinagar — near Dal Lake</span></div>
+      <div class="pd-info-row"><span class="ic">🕐</span><span>Check-in 12 PM · Check-out 11 AM</span></div>
+    </div>
+
+    <div class="pd-help-box" style="margin-top:16px">
+      <h4>🎧 Need Help?</h4>
+      <a href="tel:+919596609126">📞 +91 95966 09126</a>
+      <a href="mailto:lailaguesthouse1250@gmail.com">✉️ lailaguesthouse1250@gmail.com</a>
+      <a href="https://wa.me/919596609126" target="_blank">💬 WhatsApp us</a>
+    </div>
+  </div>
+
+</div><!-- /pd-wrap -->
+
+<!-- Loading state -->
+<div id="pdLoading" style="text-align:center;padding:140px 24px 80px;color:var(--muted)">Loading room details...</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p></div>
+</footer>
+
+<!-- Leaflet (free OpenStreetMap) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+const LS={get:k=>{try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};
+const WA='919596609126';
+let currentRoom=null, slideIdx=0, slideTotal=0;
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+function toggleMob(){const m=document.getElementById('mobMenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+// ════════════════ LOAD ROOM ════════════════
+async function loadRoom(){
+  const id=new URLSearchParams(window.location.search).get('id');
+  if(!id){ document.getElementById('pdLoading').textContent='No room ID specified.'; return; }
+  let room=null;
+  if(window.refs){ try{ const d=await refs.rooms.doc(id).get(); if(d.exists) room={id,...d.data()}; }catch(e){} }
+  if(!room){ const list=LS.get('lks_rooms')||[]; room=list.find(r=>r.id===id); }
+  if(!room){ document.getElementById('pdLoading').textContent='Room not found.'; return; }
+  currentRoom=room; renderRoom(room);
+}
+
+function renderRoom(r){
+  document.title=`${r.name} — Laila Kashmiri Stay`;
+  document.getElementById('bcName').textContent=r.name;
+  document.getElementById('pdTag').textContent=r.badge||'Room';
+  document.getElementById('pdTitle').textContent=r.name;
+  document.getElementById('pdOverview').textContent=r.desc||'No description added yet.';
+  document.getElementById('pdAmenities').innerHTML=(r.amenities||[]).map(a=>`<span class="rtag">${a}</span>`).join('')||'<span style="color:var(--muted);font-size:.85rem">Not specified</span>';
+
+  const price=Number(r.price||0);
+  document.getElementById('pdCurrPrice').innerHTML=`₹${price.toLocaleString('en-IN')}<span class="pd-per"> /night</span>`;
+  const waMsg=encodeURIComponent(`Hi! I'm interested in "${r.name}" (₹${price.toLocaleString('en-IN')}/night). Please share availability.`);
+  document.getElementById('pdWaBtn').href=`https://wa.me/${WA}?text=${waMsg}`;
+
+  // Slider
+  const slides=[];
+  if(r.video) slides.push({type:'video',src:r.video,poster:r.photo||''});
+  if(r.photo) slides.push({type:'img',src:r.photo});
+  buildSlider(slides, r.emoji||'🏠');
+
+  document.getElementById('pdLoading').style.display='none';
+  document.getElementById('pdWrap').style.display='grid';
+  initRoomMiniMap();
+}
+
+// ════════════════ SLIDER ════════════════
+function buildSlider(slides, emoji){
+  const track=document.getElementById('pdTrack');
+  const dots=document.getElementById('pdDots');
+  slideTotal=slides.length; slideIdx=0;
+  if(!slideTotal){
+    document.getElementById('pdSlider').innerHTML=`<div class="pd-slide-empty">${emoji}</div>`;
+    return;
+  }
+  track.innerHTML=slides.map(s=>
+    s.type==='video'
+      ? `<div class="pd-slide"><video src="${s.src}" controls playsinline ${s.poster?`poster="${s.poster}"`:''}></video></div>`
+      : `<div class="pd-slide"><img src="${s.src}" alt="Room photo" loading="lazy"/></div>`
+  ).join('');
+  dots.innerHTML=slides.map((_,i)=>`<button class="pd-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('');
+  document.getElementById('pdPrev').style.display=slideTotal<2?'none':'';
+  document.getElementById('pdNext').style.display=slideTotal<2?'none':'';
+}
+function goSlide(i){ slideIdx=i; document.getElementById('pdTrack').style.transform=`translateX(-${i*100}%)`; document.querySelectorAll('.pd-dot').forEach((d,j)=>d.classList.toggle('active',j===i)); }
+function slidePrev(){ goSlide((slideIdx-1+slideTotal)%slideTotal); }
+function slideNext(){ goSlide((slideIdx+1)%slideTotal); }
+
+function goEnquiry(){
+  window.location.href=`enquiry.html?type=room&id=${currentRoom?.id}`;
+}
+
+// ════════════════ MINI MAP (free Leaflet + OpenStreetMap) ════════════════
+function initRoomMiniMap(){
+  const el=document.getElementById('roomMiniMap');
+  if(!el || typeof L==='undefined') return;
+  const LAT=34.0903, LNG=74.8298;
+  const map=L.map('roomMiniMap',{scrollWheelZoom:false}).setView([LAT,LNG],15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
+  const icon=L.divIcon({
+    html:'<div style="background:var(--saffron);width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)"><span style="transform:rotate(45deg);font-size:.9rem">🏡</span></div>',
+    className:'', iconSize:[30,30], iconAnchor:[15,30]
+  });
+  L.marker([LAT,LNG],{icon}).addTo(map).bindPopup('<b>Laila Kashmiri Stay</b><br/>Dalgate, Srinagar');
+}
+
+loadRoom();
+</script>
+</body>
+</html>

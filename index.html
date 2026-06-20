@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Laila Kashmiri Stay — Dalgate, Srinagar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header">
+      <span class="mm-title">Laila Kashmiri Stay</span>
+      <button class="mob-close" onclick="toggleMob()">✕</button>
+    </div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="#gallery" onclick="toggleMob()">Gallery</a>
+      <a href="#contact" onclick="toggleMob()">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="#booking" onclick="toggleMob()" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <img id="heroBgImg" alt="Kashmir"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-pat"></div>
+  <div class="hero-content">
+    <div class="hero-eye">Dalgate · Srinagar · Kashmir</div>
+    <h1 class="hero-title">Where the<br/><em>Valley</em> Welcomes<br/>You Home</h1>
+    <p class="hero-sub">Authentic homestay experience beside the Dal Lake</p>
+    <div class="hero-ctas">
+      <a href="#booking" class="btn-p">Book Your Stay</a>
+      <a href="#packages" class="btn-o">Explore Packages</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll<div class="scroll-line"></div></div>
+</section>
+
+<!-- ABOUT STRIP -->
+<div class="about-strip">
+  <div class="astat"><span class="astat-num" id="ctr1">0</span><div class="astat-lbl">Happy Guests</div></div>
+  <div class="astat"><span class="astat-num">5★</span><div class="astat-lbl">Rating</div></div>
+  <div class="astat"><span class="astat-num" id="ctr2">0</span><div class="astat-lbl">Rooms</div></div>
+  <div class="astat"><span class="astat-num" id="ctr3">0</span><div class="astat-lbl">Packages</div></div>
+  <div class="astat"><span class="astat-num">24/7</span><div class="astat-lbl">Concierge</div></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-hdr">
+    <div class="sec-eye">Our Story</div>
+    <h2 class="sec-title" id="aboutTitle">About Laila Kashmiri Stay</h2>
+  </div>
+  <div class="about-content">
+    <div>
+      <p class="sec-desc" id="aboutDesc" style="max-width:none">A family-run paying guest house in the heart of Srinagar, just minutes from Dal Lake. We started Laila Stay with one goal — give travellers the warmth of a Kashmiri home along with the comfort of a proper hotel. In partnership with Voyara Trails, we also help guests plan the rest of their Kashmir trip, from shikara rides to Gulmarg snowfields.</p>
+      <a href="about.html" style="display:inline-block;margin-top:18px;color:var(--saffron);font-weight:600;font-size:.9rem;text-decoration:none">Read Full Story →</a>
+    </div>
+    <div class="ph-box">🏡</div>
+  </div>
+</section>
+
+<!-- ROOMS -->
+<section id="rooms">
+  <div class="sec-hdr">
+    <div class="sec-eye">Where You'll Rest</div>
+    <h2 class="sec-title">Our Rooms & Stays</h2>
+    <p class="sec-desc">Each room is thoughtfully designed to reflect Kashmiri craftsmanship — walnut woodwork, hand-embroidered textiles, and mountain views.</p>
+  </div>
+  <div class="rooms-grid" id="roomsGrid"></div>
+  <div style="text-align:center;margin-top:30px"><a href="rooms.html" class="btn-o-light">View All Rooms →</a></div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="sec-hdr">
+    <div class="sec-eye">Curated Experiences</div>
+    <h2 class="sec-title">Kashmir Tour Packages</h2>
+    <p class="sec-desc">From Dal Lake sunrises to Gulmarg snowfields — every itinerary crafted so you don't worry about a thing.</p>
+  </div>
+  <div class="pkg-grid" id="pkgGrid"></div>
+  <div style="text-align:center;margin-top:30px"><a href="packages.html" class="btn-o-light">View All Packages →</a></div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="sec-hdr">
+    <div class="sec-eye">A Glimpse</div>
+    <h2 class="sec-title">Life at Laila Stay</h2>
+    <p class="sec-desc">Mornings on the shikara, evenings in the garden, nights under the Himalayan sky.</p>
+  </div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div style="max-width:700px;margin:0 auto">
+    <div class="sec-eye">Reserve Your Dates</div>
+    <h2 class="sec-title">Book Your Stay</h2>
+    <p class="sec-desc">Fill in the form and we'll confirm your booking within 2 hours via WhatsApp.</p>
+  </div>
+  <div class="booking-form">
+    <div id="bFormWrap">
+      <div class="form-grid">
+        <div class="fg"><label>Full Name</label><input id="f_name" placeholder="Your name"/></div>
+        <div class="fg"><label>Phone / WhatsApp</label><input id="f_phone" placeholder="+91 XXXXX XXXXX"/></div>
+        <div class="fg"><label>Email</label><input id="f_email" placeholder="you@email.com"/></div>
+        <div class="fg"><label>No. of Guests</label>
+          <select id="f_guests"><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5+ Guests</option></select>
+        </div>
+        <div class="fg"><label>Check-In</label><input type="date" id="f_checkin"/></div>
+        <div class="fg"><label>Check-Out</label><input type="date" id="f_checkout"/></div>
+        <div class="fg full"><label>Room / Package</label><select id="f_interest"></select></div>
+        <div class="fg full"><label>Special Requests</label><textarea id="f_msg" placeholder="Any special requirements..."></textarea></div>
+      </div>
+      <button class="form-submit" onclick="submitBooking()">Send Booking Request →</button>
+    </div>
+    <div class="form-success" id="formSuccess">
+      <div class="si">🎉</div>
+      <h3>Booking Request Sent!</h3>
+      <p>We'll confirm via WhatsApp within 2 hours.<br/>Welcome to Laila Kashmiri Stay!</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-hdr">
+    <div class="sec-eye">Find Us</div>
+    <h2 class="sec-title">Get In Touch</h2>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="ci-item"><div class="ci-icon">📍</div><div class="ci-text"><h4>Address</h4><p>New Road, Khona Khan, Dalgate<br/>Srinagar, J&K — 190001</p></div></div>
+      <div class="ci-item"><div class="ci-icon">📞</div><div class="ci-text"><h4>Phone</h4><p><a href="tel:+919596609126">+91 95966 09126</a></p></div></div>
+      <div class="ci-item"><div class="ci-icon">✉️</div><div class="ci-text"><h4>Email</h4><p><a href="mailto:lailaguesthouse1250@gmail.com">lailaguesthouse1250@gmail.com</a></p></div></div>
+      <div class="ci-item"><div class="ci-icon">🤝</div><div class="ci-text"><h4>Partnership</h4><p>In partnership with <strong>Voyara Trails</strong></p></div></div>
+      <a href="https://wa.me/919596609126" class="wa-btn" target="_blank">💬 Chat on WhatsApp</a>
+    </div>
+    <div class="map-leaflet-wrap">
+      <div id="siteMap"></div>
+      <a class="map-directions-link" href="https://www.openstreetmap.org/directions?to=34.0903%2C74.8298" target="_blank" rel="noopener">🧭 Get Directions</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar, offering comfort, safety, and authentic Kashmiri hospitality. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="#gallery">Gallery</a></li><li><a href="#booking">Book Now</a></li><li><a href="#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="mailto:lailaguesthouse1250@gmail.com">Email Us</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p>
+    <button class="admin-trigger-btn" onclick="openAdmin()">⚙ Admin Panel</button>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLB()">✕</button>
+  <img id="lbImg" src="" alt=""/>
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-nav">
+    <button onclick="lbPrev()">← Prev</button>
+    <button onclick="lbNext()">Next →</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- Leaflet (free OpenStreetMap) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="config.js"></script>
+
+<!-- ═══════════════════════════
+     ADMIN PANEL
+═══════════════════════════ -->
+<div id="adminOverlay">
+  <!-- LOGIN -->
+  <div id="adminLoginScreen" style="flex:1;display:flex;align-items:center;justify-content:center;background:var(--adark)">
+    <div class="admin-login-box">
+      <div style="font-size:2.5rem;margin-bottom:16px">🔐</div>
+      <h2>Admin Panel</h2>
+      <p>Laila Kashmiri Stay Dashboard</p>
+      <input class="a-input" id="aUser" placeholder="Username"/>
+      <input class="a-input" type="password" id="aPass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <div class="a-err" id="aErr">Invalid credentials. Try again.</div>
+      <button class="a-login-btn" onclick="doLogin()">Login to Dashboard</button>
+      <br/><button class="a-back" onclick="closeAdmin()">← Back to Site</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="adminDash" style="display:none;flex:1;display:none;overflow:hidden">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <h2>🏔️ Laila Stay</h2>
+        <p>Admin Dashboard</p>
+      </div>
+      <div class="sidebar-nav">
+        <div class="snav-item active" onclick="switchPanel('overview')"><span class="sni">📊</span> Overview</div>
+        <div class="snav-item" onclick="switchPanel('bookings')"><span class="sni">📋</span> Bookings</div>
+        <div class="snav-item" onclick="switchPanel('rooms')"><span class="sni">🛏️</span> Rooms</div>
+        <div class="snav-item" onclick="switchPanel('packages')"><span class="sni">📦</span> Packages</div>
+        <div class="snav-item" onclick="switchPanel('gallery')"><span class="sni">🖼️</span> Gallery</div>
+        <div class="snav-item" onclick="switchPanel('settings')"><span class="sni">⚙️</span> Settings</div>
+      </div>
+      <div class="sidebar-footer">
+        <button class="admin-close-btn" onclick="closeAdmin()">✕ Exit Admin</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+
+      <!-- OVERVIEW -->
+      <div class="admin-panel active" id="panel-overview">
+        <div class="admin-panel-title">Overview</div>
+        <div class="admin-panel-sub">Welcome back! Here's your dashboard summary.</div>
+        <div class="admin-stat-row">
+          <div class="astat-card"><div class="astat-card-num" id="s_total">0</div><div class="astat-card-lbl">Total Bookings</div></div>
+          <div class="astat-card"><div class="astat-card-num" id="s_new" style="color:#4aaa65">0</div><div class="astat-card-lbl">New / Pending</div></div>
+          <div class="astat-card"><div class="astat-card-num" id="s_conf">0</div><div class="astat-card-lbl">Confirmed</div></div>
+          <div class="astat-card"><div class="astat-card-num" id="s_rooms">0</div><div class="astat-card-lbl">Rooms Listed</div></div>
+          <div class="astat-card"><div class="astat-card-num" id="s_pkgs">0</div><div class="astat-card-lbl">Packages Listed</div></div>
+          <div class="astat-card"><div class="astat-card-num" id="s_photos">0</div><div class="astat-card-lbl">Gallery Photos</div></div>
+        </div>
+        <div class="acard">
+          <h3>📋 Recent Bookings</h3>
+          <div id="overviewBookingsTable"></div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS -->
+      <div class="admin-panel" id="panel-bookings">
+        <div class="admin-panel-title">Bookings</div>
+        <div class="admin-panel-sub">Manage all guest booking requests.</div>
+        <div class="acard">
+          <div id="bookingsTableWrap"></div>
+        </div>
+      </div>
+
+      <!-- ROOMS -->
+      <div class="admin-panel" id="panel-rooms">
+        <div class="admin-panel-title">Rooms</div>
+        <div class="admin-panel-sub">Add, edit or remove room listings.</div>
+        <button class="toggle-form-btn" onclick="toggleForm('addRoomForm')">+ Add New Room</button>
+        <div class="acard" id="addRoomForm" style="display:none">
+          <h3>➕ Add Room</h3>
+          <div class="add-form-grid">
+            <div class="afg"><label>Room Name</label><input id="r_name" placeholder="e.g. Deluxe Room"/></div>
+            <div class="afg"><label>Price per Night (₹)</label><input id="r_price" placeholder="e.g. 1800" type="number"/></div>
+            <div class="afg full"><label>Description</label><textarea id="r_desc" placeholder="Room description..."></textarea></div>
+            <div class="afg full"><label>Amenities (comma separated)</label><input id="r_amen" placeholder="Free WiFi, Hot Water, Breakfast, AC"/></div>
+            <div class="afg"><label>Badge Label</label><input id="r_badge" placeholder="e.g. Top Pick"/></div>
+            <div class="afg"><label>Emoji / Icon</label><input id="r_emoji" placeholder="🏔️"/></div>
+            <div class="afg full"><label>Photo (optional)</label>
+              <input type="file" id="r_photo" accept="image/*" style="background:#1a261a;border:1px solid #2d4a2d;color:#fff;padding:10px;border-radius:9px;width:100%"/>
+            </div>
+            <div class="afg full"><label>Video URL (optional)</label>
+              <input id="r_video" placeholder="Cloudinary/YouTube video link"/>
+            </div>
+          </div>
+          <button class="add-btn" onclick="addRoom()">Save Room</button>
+        </div>
+        <div class="acard">
+          <h3>🛏️ All Rooms</h3>
+          <div id="adminRoomsList"></div>
+        </div>
+      </div>
+
+      <!-- PACKAGES -->
+      <div class="admin-panel" id="panel-packages">
+        <div class="admin-panel-title">Packages</div>
+        <div class="admin-panel-sub">Add and manage Kashmir tour packages.</div>
+        <button class="toggle-form-btn" onclick="toggleForm('addPkgForm')">+ Add New Package</button>
+        <div class="acard" id="addPkgForm" style="display:none">
+          <h3>➕ Add Package</h3>
+          <div class="add-form-grid">
+            <div class="afg"><label>Package Name</label><input id="p_name" placeholder="e.g. Dal Lake Dream"/></div>
+            <div class="afg"><label>Price (₹)</label><input id="p_price" placeholder="e.g. 12500" type="number"/></div>
+            <div class="afg"><label>Nights</label><input id="p_nights" placeholder="e.g. 3" type="number"/></div>
+            <div class="afg"><label>Days</label><input id="p_days" placeholder="e.g. 4" type="number"/></div>
+            <div class="afg full"><label>What's Included (one per line)</label><textarea id="p_includes" placeholder="3N stay&#10;Shikara ride&#10;Private transfers"></textarea></div>
+            <div class="afg"><label>Tag Label</label><input id="p_tag" placeholder="e.g. Best Value"/></div>
+            <div class="afg"><label>Featured?</label>
+              <select id="p_featured"><option value="0">No</option><option value="1">Yes (highlighted border)</option></select>
+            </div>
+            <div class="afg full"><label>Package Photo (optional)</label>
+              <input type="file" id="p_photo" accept="image/*" style="background:#1a261a;border:1px solid #2d4a2d;color:#fff;padding:10px;border-radius:9px;width:100%"/>
+            </div>
+            <div class="afg full"><label>Video URL (optional)</label>
+              <input id="p_video" placeholder="Cloudinary/YouTube video link"/>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;padding-top:20px;border-top:1px solid #2d4a2d">
+            <h3 style="margin-bottom:6px">🧩 Customizable Components (optional)</h3>
+            <p style="color:#9ab89e;font-size:.8rem;margin-bottom:14px">Add things the customer can pick/unpick — Hotel, Activities, Transfer, Concierge etc. Each can have its own photo/video and price.</p>
+            <div id="compRowsWrap"></div>
+            <button type="button" class="toggle-form-btn" style="margin-top:4px" onclick="addComponentRow()">+ Add Component</button>
+          </div>
+
+          <button class="add-btn" onclick="addPackage()">Save Package</button>
+        </div>
+        <div class="acard">
+          <h3>📦 All Packages</h3>
+          <div id="adminPkgList"></div>
+        </div>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="admin-panel" id="panel-gallery">
+        <div class="admin-panel-title">Gallery</div>
+        <div class="admin-panel-sub">Upload photos — they appear on the public gallery with zoom & hover effects.</div>
+        <div class="acard">
+          <h3>📤 Upload Photos</h3>
+          <div class="photo-drop" id="photoDrop" onclick="document.getElementById('photoInput').click()" ondragover="dragOver(event)" ondrop="dropPhoto(event)" ondragleave="dragLeave(event)">
+            <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoUpload(this.files)"/>
+            <div class="photo-drop-icon">🖼️</div>
+            <p>Click or <span>drag & drop</span> photos here</p>
+            <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:6px">JPG, PNG, WEBP supported · Multiple files OK</p>
+          </div>
+          <div class="photo-grid" id="adminPhotoGrid"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="admin-panel" id="panel-settings">
+        <div class="admin-panel-title">Settings</div>
+        <div class="admin-panel-sub">Update site info and admin credentials.</div>
+        <div class="acard">
+          <h3>🏠 Property Info</h3>
+          <div class="add-form-grid">
+            <div class="afg"><label>Property Name</label><input id="set_name" value="Laila Kashmiri Stay"/></div>
+            <div class="afg"><label>Phone</label><input id="set_phone" value="+91 95966 09126"/></div>
+            <div class="afg full"><label>Address</label><input id="set_addr" value="New Road, Khona Khan, Dalgate, Srinagar"/></div>
+            <div class="afg full"><label>Hero Background Photo</label>
+              <input type="file" id="set_hero" accept="image/*" style="background:#1a261a;border:1px solid #2d4a2d;color:#fff;padding:10px;border-radius:9px;width:100%" onchange="setHeroBg(this)"/>
+            </div>
+          </div>
+          <button class="add-btn" onclick="showToast('✅ Settings saved!')">Save Settings</button>
+        </div>
+        <div class="acard">
+          <h3>📖 About Us Section</h3>
+          <div class="add-form-grid">
+            <div class="afg full"><label>Title</label><input id="about_title" placeholder="About Laila Kashmiri Stay"/></div>
+            <div class="afg full"><label>Description</label><textarea id="about_desc" placeholder="Tell guests your story..." style="min-height:110px"></textarea></div>
+          </div>
+          <button class="add-btn" onclick="saveAboutFromAdmin()">Save About Us</button>
+        </div>
+        <div class="acard">
+          <h3>🔐 Change Password</h3>
+          <div class="add-form-grid">
+            <div class="afg"><label>New Username</label><input id="set_user" placeholder="admin"/></div>
+            <div class="afg"><label>New Password</label><input type="password" id="set_pass" placeholder="New password"/></div>
+          </div>
+          <button class="add-btn" onclick="changeAdminCreds()">Update Credentials</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-main -->
+  </div><!-- /adminDash -->
+</div><!-- /adminOverlay -->
+
+<script>
+// ════════════════════════════════
+//   DATA STORE (localStorage)
+// ════════════════════════════════
+const LS = {
+  get: k => { try{ return JSON.parse(localStorage.getItem(k)||'null') }catch(e){return null} },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+
+// DEFAULTS
+const defaultRooms = [
+  {id:'r1',name:'Deluxe Room',desc:'Cozy walnut-panelled room with garden view and traditional Kashmiri furnishings.',price:1800,amenities:['Free WiFi','Hot Water','Breakfast','AC'],badge:'Available',emoji:'🌿',photo:''},
+  {id:'r2',name:'Premium Room',desc:'Spacious room with panoramic Zabarwan mountain view and king bed.',price:2500,amenities:['Mountain View','Free WiFi','Breakfast','AC','TV'],badge:'Popular',emoji:'🏔️',photo:''},
+  {id:'r3',name:'Valley Suite',desc:'Our finest suite with private sit-out, Dal Lake glimpse and butler service.',price:4200,amenities:['Dal View','Butler','Breakfast','AC','Jacuzzi'],badge:'Top Pick',emoji:'💎',photo:''}
+];
+const defaultPkgs = [
+  {id:'p1',name:'Dal Lake Dream',price:12500,nights:3,days:4,tag:'Best Value',featured:false,includes:['3N at Laila Kashmiri Stay','Shikara ride on Dal Lake','Mughal Gardens tour','Srinagar city sightseeing','Private cab transfers','Daily breakfast'],photo:''},
+  {id:'p2',name:'Gulmarg Snow Escape',price:18900,nights:4,days:5,tag:'🔥 Most Popular',featured:true,includes:['2N Srinagar + 2N Gulmarg','Gulmarg Gondola ride','Skiing/snow activities','Pahalgam half-day trip','All transfers','Breakfast + 2 dinners'],photo:''},
+  {id:'p3',name:'Kashmir Grand Tour',price:26500,nights:6,days:7,tag:'All Inclusive',featured:false,includes:['Srinagar+Pahalgam+Gulmarg stays','All major attractions','Houseboat 1 night','Sonamarg day trip','Private cab full trip','All meals included'],photo:''},
+];
+
+function getRooms(){ return roomsCache !== null ? roomsCache : (LS.get('lks_rooms') || defaultRooms); }
+function getPkgs(){ return pkgsCache !== null ? pkgsCache : (LS.get('lks_pkgs') || defaultPkgs); }
+function getBookings(){ return bookingsCache !== null ? bookingsCache : (LS.get('lks_bookings') || []); }
+function getPhotos(){ return photosCache !== null ? photosCache : (LS.get('lks_photos') || []); }
+function getCreds(){ return LS.get('lks_creds') || {user:'admin',pass:'laila2025'}; }
+
+// In-memory caches kept in sync with Firestore via onSnapshot (see FIRESTORE SYNC below).
+// Stay 'null' (and the LS/default fallback above kicks in) until Firebase is configured.
+let roomsCache = null, pkgsCache = null, bookingsCache = null, photosCache = null;
+
+function sortByCreatedAt(arr){
+  // Client-side sort — no .orderBy() used in queries, so no Firestore composite index needed
+  return [...arr].sort((a,b)=>(a.createdAt?.seconds||0)-(b.createdAt?.seconds||0));
+}
+
+// ════════════════════════════════
+//   PUBLIC SITE RENDER
+// ════════════════════════════════
+function renderRooms(){
+  const rooms = getRooms();
+  const grid = document.getElementById('roomsGrid');
+  if(!rooms.length){ grid.innerHTML='<p style="color:var(--muted)">No rooms listed yet.</p>'; return; }
+  grid.innerHTML = rooms.map(r=>`
+    <div class="room-card">
+      <div class="room-img-wrap" onclick="openLBSingle('${r.photo||''}','${r.name}')">
+        ${r.photo ? `<img src="${r.photo}" alt="${r.name}" loading="lazy"/>` : `<div class="room-emoji">${r.emoji||'🏠'}</div>`}
+        <div class="room-badge">${r.badge||'Available'}</div>
+      </div>
+      <div class="room-body">
+        <div class="room-name">${r.name}</div>
+        <div class="room-desc">${r.desc}</div>
+        <div class="room-tags">${(r.amenities||[]).map(a=>`<span class="rtag">${a}</span>`).join('')}</div>
+        <div class="room-foot">
+          <div class="room-price">₹${Number(r.price).toLocaleString('en-IN')}<span>/night</span></div>
+          <div style="display:flex;gap:8px">
+            <a href="view-room.html?id=${r.id}" class="btn-o-light" style="font-size:.8rem;padding:9px 16px;text-decoration:none">View</a>
+            <a href="enquiry.html?type=room&id=${r.id}" class="btn-p" style="font-size:.8rem;padding:9px 18px;text-decoration:none">Book Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  requestTiltUpdate();
+}
+
+function renderPackages(){
+  const pkgs = getPkgs();
+  const grid = document.getElementById('pkgGrid');
+  if(!pkgs.length){ grid.innerHTML='<p style="color:var(--muted)">No packages listed yet.</p>'; return; }
+  grid.innerHTML = pkgs.map(p=>`
+    <div class="pkg-card${p.featured?' featured':''}">
+      <div class="pkg-img-wrap" onclick="openLBSingle('${p.photo||''}','${p.name}')">
+        ${p.photo ? `<img src="${p.photo}" alt="${p.name}" loading="lazy"/>` : `<div class="pkg-emoji">🏔️</div>`}
+      </div>
+      <div class="pkg-hdr">
+        <div class="pkg-tag${p.tag&&p.tag.includes('🔥')?' hot':''}">${p.tag||'Package'}</div>
+        <div class="pkg-name">${p.name}</div>
+        <div class="pkg-nights">${p.nights?`${p.nights} Nights / ${p.days} Days`:'Flexible Duration'}</div>
+      </div>
+      <ul class="pkg-includes">${(p.includes||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
+      <div class="pkg-foot">
+        <div><div class="pkg-price">₹${Number(p.price||0).toLocaleString('en-IN')}<span class="pkg-price-lbl">per person</span></div></div>
+        <a href="view-package.html?id=${p.id}" class="btn-p" style="font-size:.8rem;padding:9px 18px;text-decoration:none">View & Enquire</a>
+      </div>
+    </div>
+  `).join('');
+  requestTiltUpdate();
+}
+
+function renderGallery(){
+  const photos = getPhotos();
+  const grid = document.getElementById('galleryGrid');
+  if(!photos.length){
+    grid.innerHTML='<div class="gal-empty" style="min-height:200px"><span>📷</span><p>No photos yet. Upload from Admin → Gallery</p></div>';
+    return;
+  }
+  grid.innerHTML = photos.map((p,i)=>`
+    <div class="gal-item" onclick="openLB(${i})">
+      <img src="${p.data}" alt="${p.name||'Kashmir'}" loading="lazy"/>
+      <div class="gal-overlay"><div class="gal-zoom">🔍</div></div>
+    </div>
+  `).join('');
+  requestTiltUpdate();
+}
+
+function updateBookingDropdown(){
+  const sel = document.getElementById('f_interest');
+  if(!sel) return;
+  const rooms = getRooms().map(r=>r.name);
+  const pkgs = getPkgs().map(p=>p.name);
+  const opts = [...rooms,...pkgs,'Other / Not Sure'];
+  sel.innerHTML = opts.map(o=>`<option>${o}</option>`).join('');
+}
+
+function updateCounters(){
+  document.getElementById('ctr2').textContent = getRooms().length;
+  document.getElementById('ctr3').textContent = getPkgs().length;
+}
+
+// ════════════════════════════════
+//   SCROLL 3D TILT (rooms / packages / gallery photos)
+// ════════════════════════════════
+// Position-based, not event-based — so mouse-wheel AND touch-swipe scroll
+// both drive it identically, and reversing scroll direction reverses the
+// rotation automatically (no manual delta-tracking, no drift).
+const TILT_MAX_ANGLE = 18; // ← hard limit in degrees, never exceeded (clamped below)
+const TILT_SELECTOR = '.room-img-wrap, .pkg-img-wrap, .gal-item';
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function updateScrollTilt(){
+  if(prefersReducedMotion) return;
+  const vh = window.innerHeight;
+  const viewportCenter = vh / 2;
+  document.querySelectorAll(TILT_SELECTOR).forEach(el=>{
+    const rect = el.getBoundingClientRect();
+    if(rect.bottom < -50 || rect.top > vh + 50) return; // skip far off-screen items (perf)
+    const elCenter = rect.top + rect.height / 2;
+    let normalized = (elCenter - viewportCenter) / viewportCenter; // ~ -1 (top) .. 1 (bottom)
+    normalized = Math.max(-1, Math.min(1, normalized)); // ← LIMIT: clamp to -1..1
+    const angle = normalized * TILT_MAX_ANGLE;           // ← LIMIT: angle never exceeds ±TILT_MAX_ANGLE
+    el.style.transform = `perspective(900px) rotateY(${angle.toFixed(2)}deg)`;
+  });
+}
+
+let tiltScheduled = false;
+function requestTiltUpdate(){
+  if(tiltScheduled) return;
+  tiltScheduled = true;
+  requestAnimationFrame(()=>{ updateScrollTilt(); tiltScheduled = false; });
+}
+window.addEventListener('scroll', requestTiltUpdate, {passive:true});
+window.addEventListener('resize', requestTiltUpdate);
+
+// ════════════════════════════════
+//   LIGHTBOX
+// ════════════════════════════════
+let lbPhotos=[], lbIdx=0;
+
+function openLB(idx){
+  const photos = getPhotos();
+  lbPhotos = photos.map(p=>({src:p.data,cap:p.name||''}));
+  lbIdx = idx;
+  showLB();
+}
+function openLBSingle(src,cap){
+  if(!src) return;
+  lbPhotos=[{src,cap}]; lbIdx=0; showLB();
+}
+function showLB(){
+  if(!lbPhotos.length) return;
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lbImg').src = lbPhotos[lbIdx].src;
+  document.getElementById('lbCaption').textContent = lbPhotos[lbIdx].cap;
+  lb.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLB(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+function lbNext(){ lbIdx=(lbIdx+1)%lbPhotos.length; showLB(); }
+function lbPrev(){ lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length; showLB(); }
+document.getElementById('lightbox').addEventListener('click',function(e){ if(e.target===this)closeLB(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeLB(); if(e.key==='ArrowRight')lbNext(); if(e.key==='ArrowLeft')lbPrev(); });
+
+// ════════════════════════════════
+//   BOOKING FORM
+// ════════════════════════════════
+async function submitBooking(){
+  const name=document.getElementById('f_name').value.trim();
+  const phone=document.getElementById('f_phone').value.trim();
+  const checkin=document.getElementById('f_checkin').value;
+  const checkout=document.getElementById('f_checkout').value;
+  if(!name||!phone||!checkin||!checkout){ showToast('⚠️ Please fill all required fields!'); return; }
+  const bk={
+    name, phone,
+    email:document.getElementById('f_email').value,
+    guests:document.getElementById('f_guests').value,
+    checkin, checkout,
+    interest:document.getElementById('f_interest').value,
+    msg:document.getElementById('f_msg').value,
+    status:'new', created:new Date().toLocaleDateString('en-IN')
+  };
+  if(window.refs){
+    try{
+      await refs.bookings.add({...bk, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+    }catch(e){ console.error(e); showToast('❌ Could not send booking, try again'); return; }
+  }else{
+    const bookings = getBookings();
+    bookings.unshift({id:'BK'+Date.now(), ...bk});
+    LS.set('lks_bookings', bookings);
+  }
+  document.getElementById('bFormWrap').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+  showToast('✅ Booking request received!');
+}
+
+// ════════════════════════════════
+//   ADMIN — LOGIN
+// ════════════════════════════════
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('open');
+  document.body.style.overflow='';
+  document.getElementById('adminDash').style.display='none';
+  document.getElementById('adminLoginScreen').style.display='flex';
+  document.getElementById('aErr').style.display='none';
+}
+function doLogin(){
+  const creds = getCreds();
+  const u=document.getElementById('aUser').value;
+  const p=document.getElementById('aPass').value;
+  if(u===creds.user && p===creds.pass){
+    document.getElementById('adminLoginScreen').style.display='none';
+    document.getElementById('adminDash').style.display='flex';
+    loadAdminData();
+    switchPanel('overview');
+  } else {
+    document.getElementById('aErr').style.display='block';
+  }
+}
+
+// ════════════════════════════════
+//   ADMIN — PANELS
+// ════════════════════════════════
+function switchPanel(name){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.snav-item').forEach(s=>s.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const items = document.querySelectorAll('.snav-item');
+  const map = {overview:0,bookings:1,rooms:2,packages:3,gallery:4,settings:5};
+  if(items[map[name]]) items[map[name]].classList.add('active');
+  loadAdminData();
+  if(name==='settings') prefillAboutForm();
+}
+
+async function prefillAboutForm(){
+  try{
+    const data = typeof getAboutContent==='function' ? await getAboutContent() : null;
+    if(data){
+      document.getElementById('about_title').value = data.title || '';
+      document.getElementById('about_desc').value = data.desc || '';
+    }
+  }catch(e){ console.warn('Could not prefill About Us form', e); }
+}
+
+function toggleForm(id){
+  const el=document.getElementById(id);
+  el.style.display = el.style.display==='none'?'block':'none';
+}
+
+function loadAdminData(){
+  const bookings=getBookings(), rooms=getRooms(), pkgs=getPkgs(), photos=getPhotos();
+  const newB=bookings.filter(b=>b.status==='new');
+  const confB=bookings.filter(b=>b.status==='confirmed');
+  // stats
+  document.getElementById('s_total').textContent=bookings.length;
+  document.getElementById('s_new').textContent=newB.length;
+  document.getElementById('s_conf').textContent=confB.length;
+  document.getElementById('s_rooms').textContent=rooms.length;
+  document.getElementById('s_pkgs').textContent=pkgs.length;
+  document.getElementById('s_photos').textContent=photos.length;
+  // bookings table
+  const bHtml = buildBookingTable(bookings.slice(0,20));
+  document.getElementById('overviewBookingsTable').innerHTML = bHtml;
+  document.getElementById('bookingsTableWrap').innerHTML = bHtml;
+  // rooms list
+  renderAdminRooms(rooms);
+  // pkgs list
+  renderAdminPkgs(pkgs);
+  // gallery
+  renderAdminGallery(photos);
+}
+
+function buildBookingTable(bookings){
+  if(!bookings.length) return '<p style="color:rgba(255,255,255,.3);text-align:center;padding:20px">No bookings yet</p>';
+  return `<table class="a-table"><thead><tr>
+    <th>Name</th><th>Phone</th><th>Check-In</th><th>Check-Out</th><th>Interest</th><th>Status</th><th>Actions</th>
+  </tr></thead><tbody>${bookings.map(b=>`
+    <tr>
+      <td>${b.name}</td>
+      <td><a href="tel:${b.phone}" style="color:var(--saffron)">${b.phone}</a></td>
+      <td>${b.checkin}</td><td>${b.checkout}</td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.interest}</td>
+      <td><span class="st-badge st-${b.status}">${b.status.toUpperCase()}</span></td>
+      <td>
+        <button class="a-action-btn confirm" onclick="bkAction('${b.id}','confirmed')">✓</button>
+        <button class="a-action-btn cancel" onclick="bkAction('${b.id}','cancelled')">✕</button>
+        <button class="a-action-btn del" onclick="bkAction('${b.id}','delete')">🗑</button>
+      </td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+async function bkAction(id,action){
+  if(window.refs){
+    try{
+      if(action==='delete') await refs.bookings.doc(id).delete();
+      else await refs.bookings.doc(id).update({status:action});
+    }catch(e){ console.error(e); showToast('❌ Action failed'); return; }
+  }else{
+    let bookings = getBookings();
+    if(action==='delete') bookings=bookings.filter(b=>b.id!==id);
+    else bookings=bookings.map(b=>b.id===id?{...b,status:action}:b);
+    LS.set('lks_bookings',bookings);
+    loadAdminData();
+  }
+  showToast(action==='delete'?'🗑 Booking deleted':`✅ Booking ${action}`);
+}
+
+// ════════════════════════════════
+//   FIRESTORE SYNC
+// ════════════════════════════════
+// If firebase.js is configured (real API keys), this takes over from localStorage:
+// real-time listeners keep every open tab/device in sync automatically.
+// Deliberately NOT using .orderBy() in any query — avoids silent failures when
+// a composite index hasn't been created yet. Sorting happens client-side instead.
+
+async function seedDefaultDataIfEmpty(){
+  if(!window.refs) return;
+  try{
+    const roomsSnap = await refs.rooms.get();
+    if(roomsSnap.empty){
+      for(const r of defaultRooms){
+        const {id, ...rest} = r;
+        await refs.rooms.add({...rest, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      }
+    }
+    const pkgsSnap = await refs.packages.get();
+    if(pkgsSnap.empty){
+      for(const p of defaultPkgs){
+        const {id, ...rest} = p;
+        await refs.packages.add({...rest, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      }
+    }
+  }catch(e){ console.error('Seeding default data failed:', e); }
+}
+
+function initFirestoreSync(){
+  if(!window.refs){
+    console.warn('Firestore not configured yet — site is running on localStorage. Fill firebase.js to switch over.');
+    return;
+  }
+
+  refs.rooms.onSnapshot(snap=>{
+    roomsCache = sortByCreatedAt(snap.docs.map(d=>({id:d.id, ...d.data()})));
+    renderRooms(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }, err=>console.error('rooms sync error:', err));
+
+  refs.packages.onSnapshot(snap=>{
+    pkgsCache = sortByCreatedAt(snap.docs.map(d=>({id:d.id, ...d.data()})));
+    renderPackages(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }, err=>console.error('packages sync error:', err));
+
+  refs.photos.onSnapshot(snap=>{
+    photosCache = sortByCreatedAt(snap.docs.map(d=>({id:d.id, ...d.data()}))).reverse(); // newest first
+    renderGallery(); loadAdminData();
+  }, err=>console.error('photos sync error:', err));
+
+  refs.bookings.onSnapshot(snap=>{
+    bookingsCache = sortByCreatedAt(snap.docs.map(d=>({id:d.id, ...d.data()}))).reverse(); // newest first
+    loadAdminData();
+  }, err=>console.error('bookings sync error:', err));
+}
+
+// ════════════════════════════════
+//   ADMIN — ROOMS
+// ════════════════════════════════
+async function addRoom(){
+  const name=document.getElementById('r_name').value.trim();
+  const price=document.getElementById('r_price').value;
+  if(!name||!price){ showToast('⚠️ Name and price required'); return; }
+  const file=document.getElementById('r_photo').files[0];
+  let photoUrl='';
+  if(file){
+    showToast('⏳ Uploading photo...');
+    try{ photoUrl=await uploadToCloudinary(file); }
+    catch(e){ console.error(e); showToast('❌ Photo upload failed — saving without photo'); }
+  }
+  const roomData = {
+    name, price:Number(price),
+    desc:document.getElementById('r_desc').value,
+    amenities:document.getElementById('r_amen').value.split(',').map(s=>s.trim()).filter(Boolean),
+    badge:document.getElementById('r_badge').value||'Available',
+    emoji:document.getElementById('r_emoji').value||'🏠',
+    photo: photoUrl,
+    video: document.getElementById('r_video').value.trim()
+  };
+  if(window.refs){
+    try{
+      await refs.rooms.add({...roomData, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      // onSnapshot listener re-renders automatically
+    }catch(e){ console.error(e); showToast('❌ Could not save room'); return; }
+  }else{
+    const rooms=getRooms();
+    rooms.push({id:'r'+Date.now(), ...roomData});
+    LS.set('lks_rooms',rooms);
+    renderRooms(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }
+  toggleForm('addRoomForm');
+  showToast('✅ Room added!');
+  ['r_name','r_price','r_desc','r_amen','r_badge','r_emoji','r_video'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('r_photo').value='';
+}
+
+function renderAdminRooms(rooms){
+  const el=document.getElementById('adminRoomsList');
+  if(!rooms.length){ el.innerHTML='<p style="color:rgba(255,255,255,.4)">No rooms yet. Add one above.</p>'; return; }
+  el.innerHTML=rooms.map(r=>`
+    <div class="admin-item-card">
+      <div class="aic-img">${r.photo?`<img src="${r.photo}" alt="${r.name}"/>`:(r.emoji||'🏠')}</div>
+      <div class="aic-info">
+        <div class="aic-name">${r.name}</div>
+        <div class="aic-sub">${(r.amenities||[]).slice(0,3).join(' · ')}</div>
+      </div>
+      <div class="aic-price">₹${Number(r.price).toLocaleString('en-IN')}<span style="font-family:'DM Sans';font-size:.7rem;color:rgba(255,255,255,.4)">/night</span></div>
+      <div class="aic-actions">
+        <button class="a-action-btn del" onclick="deleteRoom('${r.id}')">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function deleteRoom(id){
+  if(!confirm('Delete this room?')) return;
+  if(window.refs){
+    try{ await refs.rooms.doc(id).delete(); }
+    catch(e){ console.error(e); showToast('❌ Delete failed'); return; }
+  }else{
+    const rooms=getRooms().filter(r=>r.id!==id);
+    LS.set('lks_rooms',rooms);
+    renderRooms(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }
+  showToast('🗑 Room deleted');
+}
+
+// ════════════════════════════════
+//   ADMIN — PACKAGES
+// ════════════════════════════════
+let compRowId = 0;
+let tempComponents = []; // {rowId, name, price, included, photoFile, video}
+
+function addComponentRow(){
+  const rowId = 'cr'+(++compRowId);
+  tempComponents.push({rowId, name:'', price:'', included:true, video:''});
+  renderComponentRows();
+}
+
+function removeComponentRow(rowId){
+  tempComponents = tempComponents.filter(c=>c.rowId!==rowId);
+  renderComponentRows();
+}
+
+function renderComponentRows(){
+  const wrap = document.getElementById('compRowsWrap');
+  wrap.innerHTML = tempComponents.map(c=>`
+    <div class="comp-row">
+      <div class="comp-row-grid">
+        <div class="afg"><label>Name</label><input placeholder="e.g. Hotel Stay" value="${c.name}" oninput="updateCompField('${c.rowId}','name',this.value)"/></div>
+        <div class="afg"><label>Price (₹)</label><input type="number" placeholder="e.g. 2000" value="${c.price}" oninput="updateCompField('${c.rowId}','price',this.value)"/></div>
+        <div class="afg full"><label>Photo (optional)</label><input type="file" accept="image/*" onchange="updateCompFile('${c.rowId}',this.files[0])"/></div>
+        <div class="afg full"><label>Video URL (optional)</label><input placeholder="Cloudinary/YouTube link" value="${c.video}" oninput="updateCompField('${c.rowId}','video',this.value)"/></div>
+      </div>
+      <div class="comp-row-foot">
+        <label><input type="checkbox" ${c.included?'checked':''} onchange="updateCompField('${c.rowId}','included',this.checked)"/> Included by default</label>
+        <button type="button" class="comp-row-remove" onclick="removeComponentRow('${c.rowId}')">✕ Remove</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateCompField(rowId, field, value){
+  const c = tempComponents.find(c=>c.rowId===rowId);
+  if(c) c[field] = value;
+}
+function updateCompFile(rowId, file){
+  const c = tempComponents.find(c=>c.rowId===rowId);
+  if(c) c.photoFile = file;
+}
+
+async function addPackage(){
+  const name=document.getElementById('p_name').value.trim();
+  const price=document.getElementById('p_price').value;
+  if(!name||!price){ showToast('⚠️ Name and price required'); return; }
+  const file=document.getElementById('p_photo').files[0];
+  let photoUrl='';
+  if(file){
+    showToast('⏳ Uploading photo...');
+    try{ photoUrl=await uploadToCloudinary(file); }
+    catch(e){ console.error(e); showToast('❌ Photo upload failed — saving without photo'); }
+  }
+
+  // Upload each component's photo to Cloudinary, build final components array
+  const components = [];
+  for(const c of tempComponents){
+    if(!c.name.trim()) continue;
+    let compPhoto = '';
+    if(c.photoFile){
+      try{ compPhoto = await uploadToCloudinary(c.photoFile); }
+      catch(e){ console.error(e); showToast(`❌ Photo upload failed for ${c.name}`); }
+    }
+    components.push({
+      id:'c'+Date.now()+Math.random().toString(36).slice(2,6),
+      name:c.name.trim(), price:Number(c.price)||0,
+      included: !!c.included, photo:compPhoto, video:(c.video||'').trim()
+    });
+  }
+
+  const pkgData = {
+    name, price:Number(price),
+    nights:Number(document.getElementById('p_nights').value)||null,
+    days:Number(document.getElementById('p_days').value)||null,
+    includes:document.getElementById('p_includes').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    tag:document.getElementById('p_tag').value||'Package',
+    featured:document.getElementById('p_featured').value==='1',
+    photo:photoUrl,
+    video: document.getElementById('p_video').value.trim(),
+    components
+  };
+  if(window.refs){
+    try{
+      await refs.packages.add({...pkgData, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+    }catch(e){ console.error(e); showToast('❌ Could not save package'); return; }
+  }else{
+    const pkgs=getPkgs();
+    pkgs.push({id:'p'+Date.now(), ...pkgData});
+    LS.set('lks_pkgs',pkgs);
+    renderPackages(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }
+  toggleForm('addPkgForm');
+  showToast('✅ Package added!');
+  ['p_name','p_price','p_nights','p_days','p_includes','p_tag','p_video'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('p_photo').value='';
+}
+
+function renderAdminPkgs(pkgs){
+  const el=document.getElementById('adminPkgList');
+  if(!pkgs.length){ el.innerHTML='<p style="color:rgba(255,255,255,.4)">No packages yet.</p>'; return; }
+  el.innerHTML=pkgs.map(p=>`
+    <div class="admin-item-card">
+      <div class="aic-img">${p.photo?`<img src="${p.photo}" alt="${p.name}"/>`:'🏔️'}</div>
+      <div class="aic-info">
+        <div class="aic-name">${p.name}${p.featured?' ⭐':''}</div>
+        <div class="aic-sub">${p.nights?`${p.nights}N/${p.days}D`:''} · ${(p.includes||[]).length} inclusions</div>
+      </div>
+      <div class="aic-price">₹${Number(p.price).toLocaleString('en-IN')}</div>
+      <div class="aic-actions">
+        <button class="a-action-btn del" onclick="deletePkg('${p.id}')">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function deletePkg(id){
+  if(!confirm('Delete this package?')) return;
+  if(window.refs){
+    try{ await refs.packages.doc(id).delete(); }
+    catch(e){ console.error(e); showToast('❌ Delete failed'); return; }
+  }else{
+    const pkgs=getPkgs().filter(p=>p.id!==id);
+    LS.set('lks_pkgs',pkgs);
+    renderPackages(); updateBookingDropdown(); updateCounters(); loadAdminData();
+  }
+  showToast('🗑 Package deleted');
+}
+
+// ════════════════════════════════
+//   ADMIN — GALLERY
+// ════════════════════════════════
+async function handlePhotoUpload(files){
+  const fileArr=Array.from(files);
+  if(!fileArr.length) return;
+  showToast('⏳ Uploading...');
+  let count=0;
+  for(const file of fileArr){
+    try{
+      const url=await uploadToCloudinary(file);
+      const name=file.name.replace(/\.[^.]+$/,'');
+      if(window.refs){
+        await refs.photos.add({data:url, name, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      }else{
+        const photos=getPhotos();
+        photos.unshift({id:'ph'+Date.now()+Math.random(), data:url, name});
+        LS.set('lks_photos',photos);
+      }
+      count++;
+    }catch(e){
+      console.error(e);
+      showToast(`❌ Failed: ${file.name}`);
+    }
+  }
+  if(!window.refs){ renderGallery(); loadAdminData(); }
+  if(count) showToast(`✅ ${count} photo(s) uploaded!`);
+}
+
+function renderAdminGallery(photos){
+  const grid=document.getElementById('adminPhotoGrid');
+  if(!grid) return;
+  if(!photos.length){ grid.innerHTML=''; return; }
+  grid.innerHTML=photos.map(p=>`
+    <div class="photo-thumb">
+      <img src="${p.data}" alt="${p.name}"/>
+      <button class="photo-thumb-del" onclick="deletePhoto('${p.id}')">✕</button>
+      <div class="photo-thumb-lbl">${p.name||''}</div>
+    </div>
+  `).join('');
+}
+
+async function deletePhoto(id){
+  if(window.refs){
+    try{ await refs.photos.doc(id).delete(); }
+    catch(e){ console.error(e); showToast('❌ Delete failed'); return; }
+  }else{
+    const photos=getPhotos().filter(p=>p.id!==id);
+    LS.set('lks_photos',photos);
+    renderGallery(); loadAdminData();
+  }
+  showToast('🗑 Photo deleted');
+}
+
+// Drag & drop
+function dragOver(e){ e.preventDefault(); document.getElementById('photoDrop').classList.add('drag'); }
+function dragLeave(e){ document.getElementById('photoDrop').classList.remove('drag'); }
+function dropPhoto(e){
+  e.preventDefault(); document.getElementById('photoDrop').classList.remove('drag');
+  handlePhotoUpload(e.dataTransfer.files);
+}
+
+// ════════════════════════════════
+//   SETTINGS
+// ════════════════════════════════
+function changeAdminCreds(){
+  const u=document.getElementById('set_user').value.trim();
+  const p=document.getElementById('set_pass').value.trim();
+  if(!u||!p){ showToast('⚠️ Fill both fields'); return; }
+  LS.set('lks_creds',{user:u,pass:p});
+  showToast('✅ Credentials updated!');
+}
+async function setHeroBg(input){
+  const file=input.files[0]; if(!file) return;
+  showToast('⏳ Uploading...');
+  try{
+    const url=await uploadToCloudinary(file);
+    const img=document.getElementById('heroBgImg');
+    img.src=url; img.style.opacity='1';
+    if(window.refs){
+      await refs.siteContent.doc('hero').set({bg:url}, {merge:true});
+    }else{
+      LS.set('lks_herobg',url);
+    }
+    showToast('✅ Hero background updated!');
+  }catch(e){
+    console.error(e);
+    showToast('❌ Upload failed');
+  }
+}
+async function saveAboutFromAdmin(){
+  const title=document.getElementById('about_title').value.trim();
+  const desc=document.getElementById('about_desc').value.trim();
+  if(!title&&!desc){ showToast('⚠️ Fill at least one field'); return; }
+  try{
+    await saveAboutContent({title, desc});
+    if(title) document.getElementById('aboutTitle').textContent = title;
+    if(desc) document.getElementById('aboutDesc').textContent = desc;
+    showToast('✅ About Us updated!');
+  }catch(e){
+    console.error(e);
+    showToast('❌ Could not save — check firebase.js config');
+  }
+}
+async function loadHeroBg(){
+  if(window.refs){
+    try{
+      const doc = await refs.siteContent.doc('hero').get();
+      if(doc.exists && doc.data().bg){
+        const img=document.getElementById('heroBgImg');
+        img.src=doc.data().bg; img.style.opacity='1';
+        return;
+      }
+    }catch(e){ console.warn('Hero bg: Firestore read failed, falling back', e); }
+  }
+  const d=LS.get('lks_herobg');
+  if(d){ const img=document.getElementById('heroBgImg'); img.src=d; img.style.opacity='1'; }
+}
+
+// ════════════════════════════════
+//   UTILITIES
+// ════════════════════════════════
+function readFileAsDataURL(file, cb){
+  const r=new FileReader();
+  r.onload=e=>cb(e.target.result);
+  r.readAsDataURL(file);
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+function toggleMob(){
+  const m = document.getElementById('mobMenu');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+
+// ════════════════════════════════
+//   LOCATION MAP (free, local — Leaflet + OpenStreetMap, no API key needed)
+// ════════════════════════════════
+function initSiteMap(){
+  const el = document.getElementById('siteMap');
+  if(!el || typeof L === 'undefined') return;
+  const LAT = 34.0903, LNG = 74.8298; // Dalgate, Srinagar — near Dal Lake
+  const map = L.map('siteMap', { scrollWheelZoom:false }).setView([LAT,LNG], 15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+  const icon = L.divIcon({
+    html:'<div style="background:var(--saffron);width:34px;height:34px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.35)"><span style="transform:rotate(45deg);font-size:1rem">🏡</span></div>',
+    className:'', iconSize:[34,34], iconAnchor:[17,34]
+  });
+  L.marker([LAT,LNG], {icon}).addTo(map)
+    .bindPopup('<b>Laila Kashmiri Stay</b><br/>New Road, Khona Khan, Dalgate<br/>Srinagar, J&K — 190001')
+    .openPopup();
+}
+
+// NAV scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// Counter animation
+function animCounter(el,target,dur){
+  let n=0; const step=target/60;
+  const t=setInterval(()=>{ n+=step; if(n>=target){n=target;clearInterval(t);} el.textContent=Math.floor(n)+(target>=100?'+':''); },dur/60);
+}
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    animCounter(document.getElementById('ctr1'),500,1500);
+    observer2.disconnect();
+  }
+}).observe(document.querySelector('.about-strip'));
+const observer2 = new IntersectionObserver(()=>{});
+
+// ════════════════════════════════
+//   ABOUT US (loads from Firestore if configured)
+// ════════════════════════════════
+async function loadAboutContent(){
+  try{
+    if(typeof getAboutContent !== 'function') return;
+    const data = await getAboutContent();
+    if(data){
+      if(data.title) document.getElementById('aboutTitle').textContent = data.title;
+      if(data.desc) document.getElementById('aboutDesc').textContent = data.desc;
+    }
+  }catch(e){
+    console.warn('About content: using default text (Firebase not configured yet)', e);
+  }
+}
+
+// ════════════════════════════════
+//   INIT
+// ════════════════════════════════
+renderRooms();
+renderPackages();
+renderGallery();
+updateBookingDropdown();
+updateCounters();
+loadHeroBg();
+loadAboutContent();
+initSiteMap();
+seedDefaultDataIfEmpty().then(initFirestoreSync);
+</script>
+</body>
+</html>

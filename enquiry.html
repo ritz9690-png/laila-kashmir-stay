@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Enquiry — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+.eq-wrap{max-width:700px;margin:0 auto;padding:110px 24px 70px}
+.eq-media{border-radius:18px;overflow:hidden;background:var(--pine-l);margin-bottom:24px}
+.eq-media img,.eq-media video{width:100%;display:block;max-height:380px;object-fit:cover}
+.eq-media.no-media{height:200px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;color:var(--pine)}
+.eq-tag{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--saffron);margin-bottom:8px}
+.eq-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:600;color:var(--ink);margin-bottom:6px}
+.eq-meta{color:var(--muted);font-size:.92rem;margin-bottom:14px}
+.eq-desc{color:var(--muted);font-size:.95rem;line-height:1.7;margin-bottom:20px}
+.eq-list-label{font-size:.8rem;font-weight:600;color:var(--ink);margin-bottom:10px}
+.eq-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:8px;padding:0}
+.eq-list li{font-size:.9rem;color:var(--ink);padding-left:24px;position:relative}
+.eq-list li::before{content:'✓';position:absolute;left:0;color:var(--pine);font-weight:700}
+.eq-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--ink);margin:18px 0 28px}
+.eq-price span{font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--muted);font-weight:400}
+.eq-wa{background:#25d366;color:#fff;text-align:center;padding:15px;border-radius:25px;text-decoration:none;font-weight:600;font-size:.95rem;display:block;margin-bottom:36px}
+.eq-divider{border:none;border-top:1px solid var(--border);margin:36px 0}
+.eq-form-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;margin-bottom:6px}
+.eq-form-sub{color:var(--muted);font-size:.88rem;margin-bottom:22px}
+.eq-interest-pill{display:inline-block;background:var(--saffron-l);color:var(--saffron);font-size:.82rem;font-weight:600;padding:7px 16px;border-radius:20px;margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="index.html#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header">
+      <span class="mm-title">Laila Kashmiri Stay</span>
+      <button class="mob-close" onclick="toggleMob()">✕</button>
+    </div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="index.html#booking" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<div class="eq-wrap">
+  <!-- Item detail (only shown if a specific room/package was opened) -->
+  <div id="itemBlock" style="display:none">
+    <div class="eq-media" id="eqMedia"></div>
+    <div class="eq-tag" id="eqTag"></div>
+    <h1 class="eq-title" id="eqTitle"></h1>
+    <div class="eq-meta" id="eqMeta"></div>
+    <p class="eq-desc" id="eqDesc" style="display:none"></p>
+    <div class="eq-list-label" id="eqListLabel"></div>
+    <ul class="eq-list" id="eqList"></ul>
+    <div class="eq-price" id="eqPrice"></div>
+    <a class="eq-wa" id="eqWaBtn" href="#" target="_blank">💬 Enquire on WhatsApp</a>
+    <hr class="eq-divider"/>
+  </div>
+
+  <!-- Enquiry form -->
+  <div class="eq-form-title">Send an Enquiry</div>
+  <p class="eq-form-sub">Fill in your details and we'll confirm via WhatsApp within 2 hours.</p>
+  <div class="eq-interest-pill" id="interestPill" style="display:none"></div>
+
+  <div id="eqFormWrap">
+    <div class="form-grid">
+      <div class="fg"><label>Full Name</label><input id="f_name" placeholder="Your name"/></div>
+      <div class="fg"><label>Phone / WhatsApp</label><input id="f_phone" placeholder="+91 XXXXX XXXXX"/></div>
+      <div class="fg"><label>Email</label><input id="f_email" placeholder="you@email.com"/></div>
+      <div class="fg"><label>No. of Guests</label>
+        <select id="f_guests"><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5+ Guests</option></select>
+      </div>
+      <div class="fg"><label>Check-In</label><input type="date" id="f_checkin"/></div>
+      <div class="fg"><label>Check-Out</label><input type="date" id="f_checkout"/></div>
+      <div class="fg full"><label>Special Requests</label><textarea id="f_msg" placeholder="Any special requirements..."></textarea></div>
+    </div>
+    <button class="form-submit" onclick="submitEnquiry()">Send Enquiry Request →</button>
+  </div>
+  <div class="form-success" id="formSuccess" style="display:none">
+    <div class="si">🎉</div>
+    <h3>Enquiry Sent!</h3>
+    <p>We'll confirm via WhatsApp within 2 hours.<br/>Welcome to Laila Kashmiri Stay!</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar, offering comfort, safety, and authentic Kashmiri hospitality. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#booking">Book Now</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="mailto:lailaguesthouse1250@gmail.com">Email Us</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p>
+  </div>
+</footer>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+const LS = {
+  get: (k) => { try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set: (k,v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+const WA_NUMBER = '919596609126';
+
+// Tiny fallback defaults — only used if Firestore isn't configured yet
+// AND localStorage is empty (e.g. very first visit landed here directly)
+const fallbackRooms = [
+  {id:'r1',name:'Deluxe Room',desc:'Cozy walnut-panelled room with garden view.',price:1800,amenities:['Free WiFi','Hot Water','Breakfast','AC'],badge:'Available',emoji:'🌿',photo:'',video:''}
+];
+const fallbackPkgs = [
+  {id:'p1',name:'Dal Lake Dream',price:12500,nights:3,days:4,tag:'Best Value',includes:['3N stay','Shikara ride','Private transfers'],photo:'',video:''}
+];
+
+// NAV scroll + mobile menu
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+function toggleMob(){
+  const m = document.getElementById('mobMenu');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+
+// ════════════════════════════════
+//   LOAD ITEM (room or package) FROM URL ?type=&id=
+// ════════════════════════════════
+let currentItem = null;
+let currentType = null;
+
+async function findItem(type, id){
+  if(window.refs){
+    try{
+      const doc = await (type==='room' ? refs.rooms.doc(id).get() : refs.packages.doc(id).get());
+      if(doc.exists) return {id:doc.id, ...doc.data()};
+    }catch(e){ console.warn('Firestore lookup failed, trying localStorage', e); }
+  }
+  const lsList = LS.get(type==='room' ? 'lks_rooms' : 'lks_pkgs') || (type==='room' ? fallbackRooms : fallbackPkgs);
+  return lsList.find(x=>x.id===id) || null;
+}
+
+function renderMedia(item){
+  const wrap = document.getElementById('eqMedia');
+  if(item.video){
+    wrap.classList.remove('no-media');
+    wrap.innerHTML = `<video src="${item.video}" controls playsinline ${item.photo?`poster="${item.photo}"`:''}></video>`;
+  }else if(item.photo){
+    wrap.classList.remove('no-media');
+    wrap.innerHTML = `<img src="${item.photo}" alt="${item.name}"/>`;
+  }else{
+    wrap.classList.add('no-media');
+    wrap.innerHTML = currentType==='room' ? (item.emoji||'🏠') : '🏔️';
+  }
+}
+
+function renderItem(type, item){
+  currentItem = item; currentType = type;
+  document.getElementById('itemBlock').style.display = 'block';
+  renderMedia(item);
+  document.getElementById('eqTag').textContent = type==='room' ? (item.badge||'Room') : (item.tag||'Package');
+  document.getElementById('eqTitle').textContent = item.name;
+  document.getElementById('eqMeta').textContent = type==='room' ? '' : (item.nights ? `${item.nights} Nights / ${item.days} Days` : 'Flexible Duration');
+  const descEl = document.getElementById('eqDesc');
+  if(type==='room' && item.desc){ descEl.textContent = item.desc; descEl.style.display='block'; }
+
+  const list = type==='room' ? (item.amenities||[]) : (item.includes||[]);
+  document.getElementById('eqListLabel').textContent = type==='room' ? 'Room Amenities' : "What's Included";
+  document.getElementById('eqList').innerHTML = list.length ? list.map(i=>`<li>${i}</li>`).join('') : '';
+
+  const priceUnit = type==='room' ? '/night' : '/person';
+  document.getElementById('eqPrice').innerHTML = `₹${Number(item.price||0).toLocaleString('en-IN')}<span>${priceUnit}</span>`;
+
+  const waMsg = encodeURIComponent(`Hi! I'm interested in "${item.name}" (₹${Number(item.price||0).toLocaleString('en-IN')}${priceUnit}). Please share more details.`);
+  document.getElementById('eqWaBtn').href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
+
+  const pill = document.getElementById('interestPill');
+  pill.textContent = `Enquiring about: ${item.name}`;
+  pill.style.display = 'inline-block';
+
+  document.title = `${item.name} — Laila Kashmiri Stay`;
+}
+
+async function initEnquiryPage(){
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get('type');
+  const id = params.get('id');
+  if(type && id){
+    const item = await findItem(type, id);
+    if(item) renderItem(type, item);
+  }
+}
+initEnquiryPage();
+
+// ════════════════════════════════
+//   SUBMIT ENQUIRY  (saves to Firestore bookings, or localStorage fallback)
+// ════════════════════════════════
+async function submitEnquiry(){
+  const name=document.getElementById('f_name').value.trim();
+  const phone=document.getElementById('f_phone').value.trim();
+  const checkin=document.getElementById('f_checkin').value;
+  const checkout=document.getElementById('f_checkout').value;
+  if(!name||!phone){ alert('Please fill your name and phone number'); return; }
+
+  const bk = {
+    name, phone,
+    email: document.getElementById('f_email').value,
+    guests: document.getElementById('f_guests').value,
+    checkin, checkout,
+    interest: currentItem ? currentItem.name : 'General Enquiry',
+    msg: document.getElementById('f_msg').value,
+    status: 'new', created: new Date().toLocaleDateString('en-IN')
+  };
+
+  if(window.refs){
+    try{
+      await refs.bookings.add({...bk, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+    }catch(e){ console.error(e); alert('Could not send, please try again or use the WhatsApp button.'); return; }
+  }else{
+    const bookings = LS.get('lks_bookings') || [];
+    bookings.unshift({id:'BK'+Date.now(), ...bk});
+    LS.set('lks_bookings', bookings);
+  }
+
+  document.getElementById('eqFormWrap').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+</script>
+</body>
+</html>

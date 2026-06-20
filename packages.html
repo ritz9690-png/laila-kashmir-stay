@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kashmir Tour Packages — Laila Kashmiri Stay</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar" class="scrolled">
+  <a href="index.html" class="nav-logo">Laila Kashmiri Stay</a>
+  <ul class="nav-links">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rooms.html">Rooms</a></li>
+    <li><a href="packages.html" class="active">Packages</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="index.html#booking" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="nav-auth" id="navAuth">
+    <button class="nav-auth-btn" id="authBtn" onclick="handleAuthClick()">Sign in</button>
+    <div class="nav-auth-drop" id="navAuthDrop">
+      <div class="nad-name" id="nadName"></div>
+      <button onclick="copyReferralLink()">🔗 Copy referral link</button>
+      <button onclick="handleSignOut()">↩ Sign out</button>
+    </div>
+  </div>
+  <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobMenu" onclick="if(event.target===this) toggleMob()">
+  <div class="mm-panel">
+    <div class="mm-header"><span class="mm-title">Laila Kashmiri Stay</span><button class="mob-close" onclick="toggleMob()">✕</button></div>
+    <div class="mm-list">
+      <a href="about.html">About</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="packages.html">Packages</a>
+      <a href="index.html#gallery">Gallery</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="index.html#booking" class="mm-book">Book Now</a>
+    </div>
+    <div class="mm-footer">
+      <a href="tel:+919596609126" class="mm-phone">📞 +91 95966 09126</a>
+      <a href="https://wa.me/919596609126" target="_blank" class="mm-wa">💬</a>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="sec-eye">Curated Experiences</div>
+  <h1>Kashmir Tour Packages</h1>
+  <p>From Dal Lake sunrises to Gulmarg snowfields — every itinerary crafted so you don't worry about a thing.</p>
+</div>
+
+<!-- BODY -->
+<div class="page-body">
+  <div class="listing-toolbar">
+    <div class="listing-search">
+      <input id="pkgSearch" placeholder="Search packages (e.g. Gulmarg, Pahalgam)..." oninput="renderPkgsPage()"/>
+    </div>
+    <div class="listing-sort">
+      <select id="pkgSort" onchange="renderPkgsPage()">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+        <option value="nights">Nights: Most First</option>
+      </select>
+    </div>
+  </div>
+  <div class="pkg-grid" id="pkgGridFull"></div>
+  <p class="listing-empty" id="pkgsEmpty" style="display:none">No packages match your search.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Laila Kashmiri Stay</div>
+      <p class="footer-tag">A paying guest house in the heart of Srinagar, offering comfort, safety, and authentic Kashmiri hospitality. Partnered with Voyara Trails.</p>
+    </div>
+    <div class="footer-col"><h4>Quick Links</h4><ul>
+      <li><a href="rooms.html">Rooms</a></li><li><a href="packages.html">Packages</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li><li><a href="index.html#booking">Book Now</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="login.html">Login</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul>
+      <li><a href="tel:+919596609126">+91 95966 09126</a></li>
+      <li><a href="mailto:lailaguesthouse1250@gmail.com">Email Us</a></li>
+      <li><a href="https://wa.me/919596609126">WhatsApp</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 Laila Kashmiri Stay · Dalgate, Srinagar</p></div>
+</footer>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<script>
+const LS = { get:k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}, set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)) };
+const defaultPkgs = [
+  {id:'p1',name:'Dal Lake Dream',price:12500,nights:3,days:4,tag:'Best Value',featured:false,includes:['3N at Laila Kashmiri Stay','Shikara ride on Dal Lake','Mughal Gardens tour','Srinagar city sightseeing','Private cab transfers','Daily breakfast'],photo:''},
+  {id:'p2',name:'Gulmarg Snow Escape',price:18900,nights:4,days:5,tag:'🔥 Most Popular',featured:true,includes:['2N Srinagar + 2N Gulmarg','Gulmarg Gondola ride','Skiing/snow activities','Pahalgam half-day trip','All transfers','Breakfast + 2 dinners'],photo:''},
+  {id:'p3',name:'Kashmir Grand Tour',price:26500,nights:6,days:7,tag:'All Inclusive',featured:false,includes:['Srinagar+Pahalgam+Gulmarg stays','All major attractions','Houseboat 1 night','Sonamarg day trip','Private cab full trip','All meals included'],photo:''},
+];
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60));
+function toggleMob(){const m=document.getElementById('mobMenu');m.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+
+let allPkgs = [];
+
+async function loadPkgsList(){
+  if(window.refs){
+    try{
+      const snap = await refs.packages.get();
+      if(!snap.empty){ allPkgs = snap.docs.map(d=>({id:d.id,...d.data()})); renderPkgsPage(); return; }
+    }catch(e){ console.warn('Firestore packages read failed, using localStorage', e); }
+  }
+  allPkgs = LS.get('lks_pkgs') || defaultPkgs;
+  renderPkgsPage();
+}
+
+function renderPkgsPage(){
+  const q = (document.getElementById('pkgSearch')?.value || '').trim().toLowerCase();
+  const sort = document.getElementById('pkgSort')?.value || 'default';
+  let pkgs = allPkgs.filter(p=>{
+    if(!q) return true;
+    const hay = `${p.name} ${p.tag||''} ${(p.includes||[]).join(' ')} ${p.locations||''}`.toLowerCase();
+    return hay.includes(q);
+  });
+  if(sort==='low') pkgs = [...pkgs].sort((a,b)=>Number(a.price||0)-Number(b.price||0));
+  if(sort==='high') pkgs = [...pkgs].sort((a,b)=>Number(b.price||0)-Number(a.price||0));
+  if(sort==='nights') pkgs = [...pkgs].sort((a,b)=>Number(b.nights||0)-Number(a.nights||0));
+  if(sort==='default') pkgs = [...pkgs].sort((a,b)=>(b.featured?1:0)-(a.featured?1:0));
+
+  const grid = document.getElementById('pkgGridFull');
+  const empty = document.getElementById('pkgsEmpty');
+  if(!pkgs.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = pkgs.map(p=>`
+    <div class="pkg-card${p.featured?' featured':''}">
+      <div class="pkg-img-wrap">
+        ${p.photo ? `<img src="${p.photo}" alt="${p.name}" loading="lazy"/>` : `<div class="pkg-emoji">🏔️</div>`}
+      </div>
+      <div class="pkg-hdr">
+        <div class="pkg-tag${p.tag&&p.tag.includes('🔥')?' hot':''}">${p.tag||'Package'}</div>
+        <div class="pkg-name">${p.name}</div>
+        <div class="pkg-nights">${p.nights?`${p.nights} Nights / ${p.days} Days`:'Flexible Duration'}</div>
+      </div>
+      <ul class="pkg-includes">${(p.includes||[]).map(i=>`<li>${i}</li>`).join('')}</ul>
+      <div class="pkg-foot">
+        <div><div class="pkg-price">₹${Number(p.price||0).toLocaleString('en-IN')}<span class="pkg-price-lbl">per person</span></div></div>
+        <a href="view-package.html?id=${p.id}" class="btn-p" style="font-size:.8rem;padding:9px 18px;text-decoration:none">View & Enquire</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+loadPkgsList();
+</script>
+</body>
+</html>
