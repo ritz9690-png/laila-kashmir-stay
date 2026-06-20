@@ -208,7 +208,7 @@ function goEnquiry(){
 function initRoomMiniMap(){
   const el=document.getElementById('roomMiniMap');
   if(!el || typeof L==='undefined') return;
-  const LAT=34.0903, LNG=74.8298;
+  const LAT=34.0846193, LNG=74.8276237; // Laila Paying Guest House — exact location from Google Maps
   const map=L.map('roomMiniMap',{scrollWheelZoom:false}).setView([LAT,LNG],15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
   const icon=L.divIcon({

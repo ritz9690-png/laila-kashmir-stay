@@ -13,6 +13,28 @@
   html.no-styles-css body{background:#0f1a10;color:#fff;font-family:'DM Sans',sans-serif;padding:20px;line-height:1.6}
   html.no-styles-css :where(section,div){max-width:900px;margin:0 auto 24px}
   html.no-styles-css img{max-width:100%;height:auto}
+
+  /* ═══════════ WHATSAPP CHAT WIDGET ═══════════ */
+  #waWidget{position:fixed;bottom:24px;right:24px;z-index:9999;font-family:'DM Sans',sans-serif}
+  #waBubble{width:60px;height:60px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.3);cursor:pointer;border:none;transition:transform .2s}
+  #waBubble:hover{transform:scale(1.06)}
+  #waBubble svg{width:30px;height:30px;fill:#fff}
+  #waPopup{position:absolute;bottom:76px;right:0;width:300px;background:#142d1c;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:hidden;display:none;flex-direction:column;border:1px solid #2d4a2d}
+  #waPopup.open{display:flex}
+  .wa-head{background:#1f7a4d;padding:16px 18px;display:flex;align-items:center;gap:12px;position:relative}
+  .wa-head-icon{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .wa-head-icon svg{width:20px;height:20px;fill:#fff}
+  .wa-head-text strong{color:#fff;font-size:.92rem;display:block}
+  .wa-head-text span{color:rgba(255,255,255,.75);font-size:.74rem}
+  .wa-close{position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.8);font-size:1.1rem;cursor:pointer;line-height:1}
+  .wa-body{padding:14px;display:flex;flex-direction:column;gap:8px}
+  .wa-greet{background:#fff;color:#1a2a1a;padding:12px 14px;border-radius:12px;font-size:.84rem;line-height:1.5}
+  .wa-greet strong{color:#1f7a4d}
+  .wa-opt{background:#fff;border:none;color:#1a2a1a;padding:11px 14px;border-radius:10px;font-size:.83rem;font-weight:600;text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s}
+  .wa-opt:hover{background:#e8f5ee}
+  .wa-cta{background:#25d366;color:#fff;border:none;padding:13px;font-size:.86rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .wa-cta:hover{background:#1fb858}
+  @media(max-width:480px){ #waPopup{width:88vw;right:0} #waWidget{right:16px;bottom:16px} }
 </style>
 </head>
 <body>
@@ -184,7 +206,7 @@
     </div>
     <div class="map-leaflet-wrap">
       <div id="siteMap"></div>
-      <a class="map-directions-link" href="https://www.openstreetmap.org/directions?to=34.0903%2C74.8298" target="_blank" rel="noopener">🧭 Get Directions</a>
+      <a class="map-directions-link" href="https://www.google.com/maps/dir/?api=1&destination=34.0846193,74.8276237" target="_blank" rel="noopener">🧭 Get Directions</a>
     </div>
   </div>
 </section>
@@ -221,6 +243,30 @@
     <button onclick="lbPrev()">← Prev</button>
     <button onclick="lbNext()">Next →</button>
   </div>
+</div>
+
+<!-- WHATSAPP CHAT WIDGET -->
+<div id="waWidget">
+  <div id="waPopup">
+    <div class="wa-head">
+      <div class="wa-head-icon"><svg viewBox="0 0 24 24"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.02 3.6a8.92 8.92 0 0 0-7.71 13.41L3 21l4.1-1.27a8.9 8.9 0 0 0 4.92 1.45h.01a8.93 8.93 0 0 0 8.92-8.91 8.85 8.85 0 0 0-3.35-6.94zM12.03 19.4h-.01a7.4 7.4 0 0 1-3.78-1.04l-.27-.16-2.79.87.86-2.72-.18-.28a7.4 7.4 0 0 1-1.14-3.95 7.42 7.42 0 0 1 7.43-7.42c1.98 0 3.84.77 5.24 2.17a7.36 7.36 0 0 1 2.18 5.25 7.42 7.42 0 0 1-7.44 7.28z"/></svg></div>
+      <div class="wa-head-text"><strong>Laila Kashmiri Stay</strong><span>Typically replies within minutes</span></div>
+      <button class="wa-close" onclick="toggleWaPopup()">✕</button>
+    </div>
+    <div class="wa-body">
+      <div class="wa-greet">👋 Hi there! Welcome to <strong>Laila Kashmiri Stay</strong>.<br/>How can we help you today?</div>
+      <button class="wa-opt" onclick="waSend('room')">🛏️ Room Booking</button>
+      <button class="wa-opt" onclick="waSend('package')">🏔️ Tour Package</button>
+      <button class="wa-opt" onclick="waSend('general')">❓ General Enquiry</button>
+    </div>
+    <button class="wa-cta" onclick="waSend('general')">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.02 3.6a8.92 8.92 0 0 0-7.71 13.41L3 21l4.1-1.27a8.9 8.9 0 0 0 4.92 1.45h.01a8.93 8.93 0 0 0 8.92-8.91 8.85 8.85 0 0 0-3.35-6.94zM12.03 19.4h-.01a7.4 7.4 0 0 1-3.78-1.04l-.27-.16-2.79.87.86-2.72-.18-.28a7.4 7.4 0 0 1-1.14-3.95 7.42 7.42 0 0 1 7.43-7.42c1.98 0 3.84.77 5.24 2.17a7.36 7.36 0 0 1 2.18 5.25 7.42 7.42 0 0 1-7.44 7.28z"/></svg>
+      WhatsApp Us Now
+    </button>
+  </div>
+  <button id="waBubble" onclick="toggleWaPopup()" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.02 3.6a8.92 8.92 0 0 0-7.71 13.41L3 21l4.1-1.27a8.9 8.9 0 0 0 4.92 1.45h.01a8.93 8.93 0 0 0 8.92-8.91 8.85 8.85 0 0 0-3.35-6.94zM12.03 19.4h-.01a7.4 7.4 0 0 1-3.78-1.04l-.27-.16-2.79.87.86-2.72-.18-.28a7.4 7.4 0 0 1-1.14-3.95 7.42 7.42 0 0 1 7.43-7.42c1.98 0 3.84.77 5.24 2.17a7.36 7.36 0 0 1 2.18 5.25 7.42 7.42 0 0 1-7.44 7.28z"/></svg>
+  </button>
 </div>
 
 <!-- TOAST -->
@@ -531,6 +577,23 @@ function readFileAsDataURL(file, cb){
   r.onload=e=>cb(e.target.result);
   r.readAsDataURL(file);
 }
+// ════════════════════════════════
+//   WHATSAPP CHAT WIDGET
+// ════════════════════════════════
+const WA_NUMBER = '919596609126';
+const WA_MESSAGES = {
+  room: "Hi! I'm interested in booking a room at Laila Kashmiri Stay. Could you share availability and rates?",
+  package: "Hi! I'd like to know more about your Kashmir tour packages. Could you help me plan a trip?",
+  general: "Hi! I have a question about Laila Kashmiri Stay."
+};
+function toggleWaPopup(){
+  document.getElementById('waPopup').classList.toggle('open');
+}
+function waSend(type){
+  const msg = encodeURIComponent(WA_MESSAGES[type] || WA_MESSAGES.general);
+  window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+}
+
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
@@ -548,7 +611,7 @@ function toggleMob(){
 function initSiteMap(){
   const el = document.getElementById('siteMap');
   if(!el || typeof L === 'undefined') return;
-  const LAT = 34.0903, LNG = 74.8298; // Dalgate, Srinagar — near Dal Lake
+  const LAT = 34.0846193, LNG = 74.8276237; // Laila Paying Guest House — exact location from Google Maps
   const map = L.map('siteMap', { scrollWheelZoom:false }).setView([LAT,LNG], 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,

@@ -80,6 +80,15 @@
 
   #bannerBox{display:none;background:#3d2a1a;border:1px solid #6a4a1e;color:#f0c27b;font-size:.8rem;padding:10px 16px;border-radius:10px;margin-bottom:18px}
 
+  .amen-chip-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .amen-chip{display:flex;align-items:center;gap:6px;background:#0f1a10;border:1px solid #2d4a2d;color:rgba(255,255,255,.8);padding:6px 8px 6px 12px;border-radius:16px;font-size:.8rem}
+  .amen-chip button{background:none;border:none;color:#e25c5c;cursor:pointer;font-size:.85rem;padding:0;line-height:1}
+  .amen-add-row{display:flex;gap:8px;margin-top:10px}
+  .amen-add-row input{flex:1}
+
+  .upload-progress-note{color:#9ab89e;font-size:.78rem;margin-top:8px}
+  .room-video-preview{margin-top:10px;max-width:220px;border-radius:8px;border:2px solid var(--pine)}
+
   @media(max-width:780px){
     .sa-wrap{flex-direction:column}
     .sa-sidebar{width:100%;display:flex;overflow-x:auto;padding:10px}
@@ -126,6 +135,8 @@
     <nav class="sa-nav">
       <button class="sa-nav-item active" onclick="saSwitch('packages')">📦 Packages</button>
       <button class="sa-nav-item" onclick="saSwitch('addpkg')">➕ Add Package</button>
+      <button class="sa-nav-item" onclick="saSwitch('rooms')">🛏 Rooms</button>
+      <button class="sa-nav-item" onclick="saSwitch('addroom')">➕ Add Room</button>
       <button class="sa-nav-item" onclick="saSwitch('bookings')">📋 Bookings</button>
       <button class="sa-nav-item" onclick="saSwitch('gallery')">🖼 Gallery</button>
       <button class="sa-nav-item" onclick="saSwitch('about')">📖 About Us</button>
@@ -165,14 +176,27 @@
 
       <div class="pkg-form-section">
         <h3>✅ Package Includes</h3>
+        <p style="color:#9ab89e;font-size:.8rem;margin-bottom:14px">Jo bhi package mein included hai, check kar de.</p>
         <div style="display:flex;flex-wrap:wrap;gap:12px">
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_hotel" checked/> 🏨 Hotel</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_houseboat"/> 🛥️ Houseboat Stay</label>
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_sight" checked/> 👁 Sightseeing</label>
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_trans" checked/> 🚌 Transfer</label>
-          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_meal" checked/> 🍽 Meal</label>
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_guide"/> 🧭 Guide</label>
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_boat"/> 🛶 Shikara Ride</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_gondola"/> 🚡 Gondola Ride</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_skiing"/> 🎿 Skiing</label>
           <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_snow"/> ❄️ Snow Activity</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_pony"/> 🐴 Pony Ride</label>
+          <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_camp"/> ⛺ Camping</label>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #233323">
+          <label style="color:rgba(255,255,255,.6);font-size:.8rem;display:block;margin-bottom:10px">🍽 Meals Included</label>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_meal_breakfast" checked/> 🍳 Breakfast</label>
+            <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_meal_lunch"/> 🍛 Lunch</label>
+            <label style="color:rgba(255,255,255,.7);font-size:.85rem;display:flex;align-items:center;gap:7px"><input type="checkbox" id="pi_meal_dinner"/> 🍲 Dinner</label>
+          </div>
         </div>
       </div>
 
@@ -235,6 +259,61 @@
         <button class="toggle-form-btn" onclick="resetPkgForm()">✕ Cancel / Reset</button>
       </div>
       <div id="pkgSaveMsg" style="display:none;margin-top:14px;padding:12px 16px;background:#1a3d2a;border-radius:10px;color:#6fcf97;font-size:.85rem"></div>
+    </div>
+
+    <!-- ROOMS LIST -->
+    <div class="sa-panel" id="sa-rooms">
+      <div class="sa-panel-title">Rooms</div>
+      <div class="sa-panel-sub">All rooms — click Edit to update details.</div>
+      <div id="saRoomList"><p style="color:rgba(255,255,255,.4)">Loading...</p></div>
+    </div>
+
+    <!-- ADD / EDIT ROOM -->
+    <div class="sa-panel" id="sa-addroom">
+      <div class="sa-panel-title" id="roomFormTitle">Add Room</div>
+      <div class="sa-panel-sub">Fill all sections below. Save hote hi site pe live ho jayega.</div>
+
+      <div class="pkg-form-section">
+        <h3>📌 Basic Info</h3>
+        <div class="add-form-grid">
+          <div class="afg"><label>Room Name</label><input id="rf_name" placeholder="e.g. Premium Room"/></div>
+          <div class="afg"><label>Tag (badge)</label><input id="rf_badge" placeholder="e.g. Popular"/></div>
+          <div class="afg"><label>Price ₹ (per night)</label><input id="rf_price" type="number" placeholder="2500"/></div>
+          <div class="afg"><label>Emoji (fallback icon)</label><input id="rf_emoji" placeholder="🏔️" maxlength="4"/></div>
+          <div class="afg full"><label>Description</label><textarea id="rf_desc" style="min-height:110px" placeholder="Describe the room..."></textarea></div>
+        </div>
+      </div>
+
+      <div class="pkg-form-section">
+        <h3>✨ Amenities</h3>
+        <p style="color:#9ab89e;font-size:.8rem;margin-bottom:4px">Add tags like WiFi, AC, Breakfast, Mountain View...</p>
+        <div class="amen-add-row">
+          <input id="rf_amen_input" placeholder="e.g. Free WiFi" onkeydown="if(event.key==='Enter'){event.preventDefault();addAmenity();}"/>
+          <button type="button" class="toggle-form-btn" onclick="addAmenity()">+ Add</button>
+        </div>
+        <div class="amen-chip-wrap" id="rf_amen_chips"></div>
+      </div>
+
+      <div class="pkg-form-section">
+        <h3>📸 Photo & 🎥 Video</h3>
+        <div class="add-form-grid">
+          <div class="afg full"><label>Room Photo</label>
+            <input type="file" id="rf_photo" accept="image/*"/>
+            <div id="rf_photo_preview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"></div>
+          </div>
+          <div class="afg full"><label>Room Video (uploads to Cloudinary)</label>
+            <input type="file" id="rf_video" accept="video/*"/>
+            <div class="upload-progress-note" id="rf_video_note"></div>
+            <video id="rf_video_preview" class="room-video-preview" controls style="display:none"></video>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+        <button class="add-btn" onclick="saveRoom()">💾 Save Room</button>
+        <button class="toggle-form-btn" onclick="resetRoomForm()">✕ Cancel / Reset</button>
+      </div>
+      <div id="roomSaveMsg" style="display:none;margin-top:14px;padding:12px 16px;background:#1a3d2a;border-radius:10px;color:#6fcf97;font-size:.85rem"></div>
     </div>
 
     <!-- BOOKINGS -->
@@ -351,9 +430,10 @@ function saSwitch(name){
   document.querySelectorAll('.sa-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sa-nav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('sa-'+name).classList.add('active');
-  const idx={packages:0,addpkg:1,bookings:2,gallery:3,about:4};
+  const idx={packages:0,addpkg:1,rooms:2,addroom:3,bookings:4,gallery:5,about:6};
   document.querySelectorAll('.sa-nav-item')[idx[name]]?.classList.add('active');
   if(name==='packages') loadSaPkgList();
+  if(name==='rooms') loadSaRoomList();
   if(name==='bookings') loadSaBookings();
   if(name==='gallery') loadSaGallery();
   if(name==='about') loadSaAbout();
@@ -455,7 +535,7 @@ async function editPkg(id){
   set('pf_hotel_name',pkg.hotel?.name); set('pf_hotel_stars',pkg.hotel?.stars);
   set('pf_hotel_loc',pkg.hotel?.location); set('pf_hotel_amen',(pkg.hotel?.amenities||[]).join(', '));
   document.getElementById('pf_featured').value=pkg.featured?'1':'0';
-  const piMap={hotel:'pi_hotel',sight:'pi_sight',trans:'pi_trans',meal:'pi_meal',guide:'pi_guide',boat:'pi_boat',snow:'pi_snow'};
+  const piMap={hotel:'pi_hotel',houseboat:'pi_houseboat',sight:'pi_sight',trans:'pi_trans',guide:'pi_guide',boat:'pi_boat',gondola:'pi_gondola',skiing:'pi_skiing',snow:'pi_snow',pony:'pi_pony',camp:'pi_camp',breakfast:'pi_meal_breakfast',lunch:'pi_meal_lunch',dinner:'pi_meal_dinner'};
   const inclIds=(pkg.packageIncludes||[]).map(x=>x.id||x);
   Object.entries(piMap).forEach(([k,domId])=>{ const el=document.getElementById(domId); if(el) el.checked=inclIds.includes(k); });
   dayRowId=0; dayRows=(pkg.itinerary||[]).map(d=>({id:'d'+(++dayRowId),title:d.title||'',acts:(d.activities||[]).join('\n')}));
@@ -496,12 +576,19 @@ async function savePkg(){
   }
 
   const incl=[document.getElementById('pi_hotel').checked&&{id:'hotel',label:'Hotel',emoji:'🏨'},
+    document.getElementById('pi_houseboat').checked&&{id:'houseboat',label:'Houseboat Stay',emoji:'🛥️'},
     document.getElementById('pi_sight').checked&&{id:'sight',label:'Sightseeing',emoji:'👁'},
     document.getElementById('pi_trans').checked&&{id:'trans',label:'Transfer',emoji:'🚌'},
-    document.getElementById('pi_meal').checked&&{id:'meal',label:'Meal',emoji:'🍽'},
     document.getElementById('pi_guide').checked&&{id:'guide',label:'Guide',emoji:'🧭'},
     document.getElementById('pi_boat').checked&&{id:'boat',label:'Shikara Ride',emoji:'🛶'},
-    document.getElementById('pi_snow').checked&&{id:'snow',label:'Snow Activity',emoji:'❄️'}
+    document.getElementById('pi_gondola').checked&&{id:'gondola',label:'Gondola Ride',emoji:'🚡'},
+    document.getElementById('pi_skiing').checked&&{id:'skiing',label:'Skiing',emoji:'🎿'},
+    document.getElementById('pi_snow').checked&&{id:'snow',label:'Snow Activity',emoji:'❄️'},
+    document.getElementById('pi_pony').checked&&{id:'pony',label:'Pony Ride',emoji:'🐴'},
+    document.getElementById('pi_camp').checked&&{id:'camp',label:'Camping',emoji:'⛺'},
+    document.getElementById('pi_meal_breakfast').checked&&{id:'breakfast',label:'Breakfast',emoji:'🍳'},
+    document.getElementById('pi_meal_lunch').checked&&{id:'lunch',label:'Lunch',emoji:'🍛'},
+    document.getElementById('pi_meal_dinner').checked&&{id:'dinner',label:'Dinner',emoji:'🍲'}
   ].filter(Boolean);
 
   const pkgData={
@@ -559,14 +646,156 @@ function showPkgMsg(msg,color='#6fcf97'){
 function resetPkgForm(){
   editPkgId=null; dayRows=[]; saCompRows=[]; termRows=[]; dayRowId=0; saCompRowId=0; termRowId=0;
   ['pf_name','pf_tag','pf_price','pf_orig','pf_nights','pf_days','pf_locs','pf_overview','pf_video','pf_inc','pf_exc','pf_hotel_name','pf_hotel_stars','pf_hotel_loc','pf_hotel_amen'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
-  ['pi_hotel','pi_sight','pi_trans','pi_meal'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=true; });
-  ['pi_guide','pi_boat','pi_snow'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
+  ['pi_hotel','pi_sight','pi_trans','pi_meal_breakfast'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=true; });
+  ['pi_houseboat','pi_guide','pi_boat','pi_gondola','pi_skiing','pi_snow','pi_pony','pi_camp','pi_meal_lunch','pi_meal_dinner'].forEach(id=>{ const el=document.getElementById(id); if(el) el.checked=false; });
   const pf=document.getElementById('pf_featured'); if(pf) pf.value='0';
   const photos=document.getElementById('pf_photos'); if(photos) photos.value='';
   renderDayRows(); renderSaCompRows(); renderTermRows();
   document.getElementById('pf_photo_preview').innerHTML='';
   document.getElementById('pkgSaveMsg').style.display='none';
   document.getElementById('pkgFormTitle').textContent='Add Package';
+}
+
+// ════════════════ ROOMS ════════════════
+let editRoomId = null;
+let rfAmenities = [];
+let rfUploadedVideoUrl = '';
+let rfUploadedPhotoUrl = '';
+
+function addAmenity(){
+  const inp=document.getElementById('rf_amen_input');
+  const val=inp.value.trim();
+  if(!val) return;
+  if(!rfAmenities.includes(val)) rfAmenities.push(val);
+  inp.value='';
+  inp.focus();
+  renderAmenityChips();
+}
+function removeAmenity(i){ rfAmenities.splice(i,1); renderAmenityChips(); }
+function renderAmenityChips(){
+  document.getElementById('rf_amen_chips').innerHTML = rfAmenities.map((a,i)=>`
+    <span class="amen-chip">${escH(a)}<button type="button" onclick="removeAmenity(${i})">✕</button></span>
+  `).join('');
+}
+
+async function loadSaRoomList(){
+  const el=document.getElementById('saRoomList');
+  let rooms=[];
+  if(window.refs){
+    try{ const snap=await refs.rooms.get(); rooms=snap.docs.map(d=>({id:d.id,...d.data()})); }
+    catch(e){ console.error(e); showBanner('Firestore se rooms load nahi hue: '+e.message); rooms=LS.get('lks_rooms')||[]; }
+  }else{ rooms=LS.get('lks_rooms')||[]; }
+  if(!rooms.length){ el.innerHTML='<p style="color:rgba(255,255,255,.4)">No rooms yet. Add one!</p>'; return; }
+  el.innerHTML=rooms.map(r=>`
+    <div class="sa-pkg-list-item">
+      <div class="sa-pkg-thumb">${r.photo?`<img src="${r.photo}" alt="${escH(r.name)}"/>`:(r.emoji||'🏠')}</div>
+      <div style="flex:1">
+        <div style="color:#fff;font-weight:600;font-size:.92rem">${escH(r.name)}</div>
+        <div style="color:rgba(255,255,255,.4);font-size:.76rem">₹${Number(r.price||0).toLocaleString('en-IN')}/night · ${escH(r.badge||'Available')}</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="toggle-form-btn" onclick="editRoom('${r.id}')">✏️ Edit</button>
+        <a href="view-room.html?id=${r.id}" target="_blank" class="toggle-form-btn" style="text-decoration:none;display:inline-flex;align-items:center">👁 View</a>
+        <button class="comp-row-remove" onclick="deleteSaRoom('${r.id}')">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function editRoom(id){
+  let room=null;
+  if(window.refs){ try{ const d=await refs.rooms.doc(id).get(); if(d.exists) room={id,...d.data()}; }catch(e){} }
+  if(!room){ const rooms=LS.get('lks_rooms')||[]; room=rooms.find(r=>r.id===id); }
+  if(!room) return;
+  editRoomId=id;
+  document.getElementById('roomFormTitle').textContent='Edit Room';
+  const set=(i,v)=>{ const el=document.getElementById(i); if(el) el.value=v||''; };
+  set('rf_name',room.name); set('rf_badge',room.badge); set('rf_price',room.price); set('rf_emoji',room.emoji); set('rf_desc',room.desc);
+  rfAmenities = [...(room.amenities||[])];
+  renderAmenityChips();
+  rfUploadedPhotoUrl = room.photo || '';
+  document.getElementById('rf_photo_preview').innerHTML = room.photo ? `<img src="${room.photo}" style="width:90px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--pine)"/>` : '';
+  rfUploadedVideoUrl = room.video || '';
+  const vp=document.getElementById('rf_video_preview');
+  if(room.video){ vp.src=room.video; vp.style.display='block'; } else { vp.style.display='none'; vp.removeAttribute('src'); }
+  document.getElementById('rf_video_note').textContent = room.video ? '✅ Existing video attached. Choose a new file to replace.' : '';
+  saSwitch('addroom');
+}
+
+async function deleteSaRoom(id){
+  if(!confirm('Delete this room?')) return;
+  if(window.refs){ try{ await refs.rooms.doc(id).delete(); }catch(e){ alert('Delete failed: '+e.message); return; } }
+  else{ LS.set('lks_rooms',(LS.get('lks_rooms')||[]).filter(r=>r.id!==id)); }
+  loadSaRoomList();
+}
+
+async function saveRoom(){
+  const name=document.getElementById('rf_name').value.trim();
+  const price=document.getElementById('rf_price').value;
+  if(!name||!price){ showRoomMsg('⚠️ Name and price are required','#e8850a'); return; }
+
+  showRoomMsg('⏳ Saving...','#9ab89e');
+
+  let photoUrl = rfUploadedPhotoUrl;
+  const photoFile = document.getElementById('rf_photo').files[0];
+  if(photoFile){
+    try{ showRoomMsg('⏳ Uploading photo...','#9ab89e'); photoUrl = await uploadToCloudinary(photoFile); }
+    catch(e){ console.error(e); showRoomMsg('❌ Photo upload failed: '+e.message,'#e25c5c'); return; }
+  }
+
+  let videoUrl = rfUploadedVideoUrl;
+  const videoFile = document.getElementById('rf_video').files[0];
+  if(videoFile){
+    try{ showRoomMsg('⏳ Uploading video... (ye thoda time le sakta hai)','#9ab89e'); videoUrl = await uploadToCloudinary(videoFile); }
+    catch(e){ console.error(e); showRoomMsg('❌ Video upload failed: '+e.message,'#e25c5c'); return; }
+  }
+
+  const roomData = {
+    name,
+    price: Number(price),
+    badge: document.getElementById('rf_badge').value.trim() || 'Available',
+    emoji: document.getElementById('rf_emoji').value.trim() || '🏠',
+    desc: document.getElementById('rf_desc').value.trim(),
+    amenities: [...rfAmenities],
+    photo: photoUrl || '',
+    video: videoUrl || ''
+  };
+
+  try{
+    if(window.refs){
+      if(editRoomId) await refs.rooms.doc(editRoomId).set({...roomData, updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      else await refs.rooms.add({...roomData, createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    }else{
+      const rooms=LS.get('lks_rooms')||[];
+      if(editRoomId){ const i=rooms.findIndex(r=>r.id===editRoomId); if(i>-1) rooms[i]={...rooms[i],...roomData}; }
+      else rooms.push({id:'r'+Date.now(),...roomData});
+      LS.set('lks_rooms',rooms);
+    }
+    showRoomMsg(`✅ Room "${name}" saved!`,'#6fcf97');
+    resetRoomForm();
+    setTimeout(()=>saSwitch('rooms'),1200);
+  }catch(e){
+    console.error(e);
+    showRoomMsg('❌ Save failed: '+e.message,'#e25c5c');
+  }
+}
+
+function showRoomMsg(msg,color='#6fcf97'){
+  const el=document.getElementById('roomSaveMsg');
+  el.style.display='block'; el.style.color=color; el.textContent=msg;
+}
+
+function resetRoomForm(){
+  editRoomId=null; rfAmenities=[]; rfUploadedPhotoUrl=''; rfUploadedVideoUrl='';
+  ['rf_name','rf_badge','rf_price','rf_emoji','rf_desc','rf_amen_input'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+  const rfPhoto=document.getElementById('rf_photo'); if(rfPhoto) rfPhoto.value='';
+  const rfVideo=document.getElementById('rf_video'); if(rfVideo) rfVideo.value='';
+  document.getElementById('rf_photo_preview').innerHTML='';
+  const vp=document.getElementById('rf_video_preview'); vp.style.display='none'; vp.removeAttribute('src');
+  document.getElementById('rf_video_note').textContent='';
+  renderAmenityChips();
+  document.getElementById('roomSaveMsg').style.display='none';
+  document.getElementById('roomFormTitle').textContent='Add Room';
 }
 
 // ════════════════ BOOKINGS ════════════════
@@ -657,6 +886,26 @@ document.addEventListener('DOMContentLoaded',()=>{
       const url=URL.createObjectURL(f);
       prev.innerHTML+=`<img src="${url}" style="width:90px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--pine)"/>`;
     });
+  });
+
+  const rfPhoto=document.getElementById('rf_photo');
+  if(rfPhoto) rfPhoto.addEventListener('change',function(){
+    const prev=document.getElementById('rf_photo_preview'); prev.innerHTML='';
+    if(this.files[0]){
+      const url=URL.createObjectURL(this.files[0]);
+      prev.innerHTML=`<img src="${url}" style="width:90px;height:70px;object-fit:cover;border-radius:8px;border:2px solid var(--pine)"/>`;
+    }
+  });
+
+  const rfVideo=document.getElementById('rf_video');
+  if(rfVideo) rfVideo.addEventListener('change',function(){
+    const vp=document.getElementById('rf_video_preview');
+    const note=document.getElementById('rf_video_note');
+    if(this.files[0]){
+      vp.src=URL.createObjectURL(this.files[0]);
+      vp.style.display='block';
+      note.textContent='📁 '+this.files[0].name+' — "Save Room" dabane par Cloudinary pe upload hoga.';
+    }
   });
 });
 </script>
