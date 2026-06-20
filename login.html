@@ -51,28 +51,10 @@
       <h1>Welcome Back</h1>
       <p class="li-sub">Sign in to manage your bookings & referrals</p>
 
-      <div class="login-tabs">
-        <button class="login-tab active" id="tabSignin" onclick="switchTab('signin')">Sign In</button>
-        <button class="login-tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      <div style="background:var(--cream,#f7f3ed);border-radius:14px;padding:14px 16px;margin:22px 0;display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--ink)">
+        <span>🔒</span><span>Secure login with Google — no password needed.</span>
       </div>
 
-      <!-- SIGN IN FORM -->
-      <div id="signinPanel">
-        <div class="login-field"><label>Email</label><input type="email" id="si_email" placeholder="you@email.com"/></div>
-        <div class="login-field"><label>Password</label><input type="password" id="si_pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doEmailSignin()"/></div>
-        <button class="login-submit" onclick="doEmailSignin()">Sign In</button>
-        <p style="text-align:center;margin-top:10px"><a href="#" onclick="doResetPassword(event)" style="font-size:.78rem;color:var(--muted);text-decoration:none">Forgot password?</a></p>
-      </div>
-
-      <!-- SIGN UP FORM -->
-      <div id="signupPanel" style="display:none">
-        <div class="login-field"><label>Full Name</label><input type="text" id="su_name" placeholder="Your name"/></div>
-        <div class="login-field"><label>Email</label><input type="email" id="su_email" placeholder="you@email.com"/></div>
-        <div class="login-field"><label>Password</label><input type="password" id="su_pass" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doEmailSignup()"/></div>
-        <button class="login-submit" onclick="doEmailSignup()">Create Account</button>
-      </div>
-
-      <div class="login-divider">or continue with</div>
       <button class="login-google" onclick="doGoogleSignin()">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 18.9 13 24 13c3.1 0 5.9 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4c-7.6 0-14.1 4.3-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-1.8 14-5.2l-6.5-5.4C29.6 35.4 26.9 36 24 36c-5.3 0-9.6-3.4-11.3-8.1l-6.6 5C9.9 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.5 5.4C41.4 36 44 30.5 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
         Continue with Google
@@ -113,14 +95,6 @@ function toggleMob(){
   document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
 }
 
-function switchTab(tab){
-  document.getElementById('tabSignin').classList.toggle('active', tab==='signin');
-  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
-  document.getElementById('signinPanel').style.display = tab==='signin' ? 'block' : 'none';
-  document.getElementById('signupPanel').style.display = tab==='signup' ? 'block' : 'none';
-  hideMsg();
-}
-
 function showMsg(text, isError){
   const el = document.getElementById('loginMsg');
   el.textContent = text;
@@ -142,40 +116,10 @@ function friendlyError(e){
   return e?.message || 'Something went wrong. Please try again.';
 }
 
-async function doEmailSignin(){
-  const email = document.getElementById('si_email').value.trim();
-  const pass = document.getElementById('si_pass').value;
-  if(!email || !pass){ showMsg('Please enter email and password.', true); return; }
-  try{
-    await signInWithEmail(email, pass);
-    showMsg('✅ Signed in successfully!', false);
-  }catch(e){ showMsg(friendlyError(e), true); }
-}
-
-async function doEmailSignup(){
-  const name = document.getElementById('su_name').value.trim();
-  const email = document.getElementById('su_email').value.trim();
-  const pass = document.getElementById('su_pass').value;
-  if(!name || !email || !pass){ showMsg('Please fill in all fields.', true); return; }
-  try{
-    await signUpWithEmail(name, email, pass);
-    showMsg('🎉 Account created! Welcome.', false);
-  }catch(e){ showMsg(friendlyError(e), true); }
-}
-
 async function doGoogleSignin(){
   try{
     await signInWithGoogle();
-  }catch(e){ showMsg(friendlyError(e), true); }
-}
-
-async function doResetPassword(ev){
-  ev.preventDefault();
-  const email = document.getElementById('si_email').value.trim();
-  if(!email){ showMsg('Enter your email above first, then click "Forgot password?"', true); return; }
-  try{
-    await resetPassword(email);
-    showMsg('📧 Password reset email sent — check your inbox.', false);
+    setTimeout(goHome, 1000);
   }catch(e){ showMsg(friendlyError(e), true); }
 }
 
@@ -199,11 +143,16 @@ function showSignedOutView(){
 }
 
 // React to auth state from firebase.js
-const _origOnAuthChanged = typeof onAuthChanged === 'function' ? onAuthChanged : null;
-function onAuthChanged(user){
-  if(_origOnAuthChanged) _origOnAuthChanged(user);
+// IMPORTANT: use a function EXPRESSION (not a function declaration) here.
+// A `function onAuthChanged(){}` declaration gets hoisted to the top of this
+// script block before any line runs — so by the time we tried to "capture"
+// the original onAuthChanged, it had already been overwritten by this one,
+// causing it to call itself forever (Maximum call stack size exceeded).
+const _origOnAuthChanged = (typeof window.onAuthChanged === 'function') ? window.onAuthChanged : null;
+window.onAuthChanged = function(user){
+  if(typeof _origOnAuthChanged === 'function') _origOnAuthChanged(user);
   if(user) showSignedInView(user); else showSignedOutView();
-}
+};
 // In case auth already resolved before this script ran
 if(typeof currentUser !== 'undefined' && currentUser) showSignedInView(currentUser);
 </script>
