@@ -328,10 +328,10 @@
     <!-- GALLERY -->
     <div class="sa-panel" id="sa-gallery">
       <div class="sa-panel-title">Gallery</div>
-      <div class="sa-panel-sub">Upload photos. Ye main gallery section mein dikhenge.</div>
+      <div class="sa-panel-sub">Upload photos ya video. Ye main gallery section mein dikhenge.</div>
       <div class="acard">
-        <div class="afg full" style="margin-bottom:14px"><label>Upload Photos</label>
-          <input type="file" multiple accept="image/*" onchange="saUploadGallery(this.files)"/>
+        <div class="afg full" style="margin-bottom:14px"><label>Upload Photos / Videos</label>
+          <input type="file" multiple accept="image/*,video/*" onchange="saUploadGallery(this.files)"/>
         </div>
         <div id="saGalleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:14px"></div>
       </div>
@@ -834,8 +834,9 @@ async function saUploadGallery(files){
   for(const f of Array.from(files)){
     try{
       const url=await uploadToCloudinary(f);
-      if(window.refs) await refs.photos.add({data:url,name:f.name.replace(/\.[^.]+$/,''),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      else{ const ph=LS.get('lks_photos')||[]; ph.unshift({id:'ph'+Date.now(),data:url,name:f.name}); LS.set('lks_photos',ph); }
+      const type=f.type.startsWith('video/')?'video':'image';
+      if(window.refs) await refs.photos.add({data:url,type:type,name:f.name.replace(/\.[^.]+$/,''),createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+      else{ const ph=LS.get('lks_photos')||[]; ph.unshift({id:'ph'+Date.now(),data:url,type:type,name:f.name}); LS.set('lks_photos',ph); }
     }catch(e){ console.error(e); alert('❌ Upload failed: '+e.message); }
   }
   loadSaGallery();
@@ -846,7 +847,9 @@ async function loadSaGallery(){
   else{ photos=LS.get('lks_photos')||[]; }
   el.innerHTML=photos.map(p=>`
     <div style="position:relative">
-      <img src="${p.data}" style="width:100%;height:100px;object-fit:cover;border-radius:8px"/>
+      ${p.type==='video'
+        ? `<video src="${p.data}" style="width:100%;height:100px;object-fit:cover;border-radius:8px" muted></video>`
+        : `<img src="${p.data}" style="width:100%;height:100px;object-fit:cover;border-radius:8px"/>`}
       <button onclick="deleteSaPhoto('${p.id}')" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.7rem">✕</button>
     </div>
   `).join('');
